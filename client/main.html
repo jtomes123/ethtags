@@ -1,0 +1,36 @@
+<head>
+  <title>DogTags</title>
+</head>
+
+<body>
+  {{>App_Body}}
+</body>
+
+<template name="App_Body">
+    {{> Template.dynamic template=main}}
+</template>
+
+<template name="hello">
+  <header>
+    Welcome to DogTags<br><footer>also known as EthTags</footer>
+  </header>
+  <div class="edit">
+    <form class="new-post">
+      <input type="text" name="name" placeholder="Your title" value="{{name}}"/><br>
+      <textarea name="content" form="new-post" placeholder="Your dogtag...">{{content}}</textarea><br>
+      <input type="submit" text="Submit"> 
+    </form>
+    <div class="buttonContainer">
+      <h4>Link:</h4>
+      <code>{{link}}</code>
+      <h4>iframe:</h4>
+      <code>{{iframe}}</code>
+    </div>
+  </div>
+</template>
+
+<template name="iframe">
+  <p>{{address}}</p>
+  <p>{{content}}</p>
+  <p>{{signature}}</p>
+</template>
