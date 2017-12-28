@@ -10,6 +10,13 @@
     {{> Template.dynamic template=main}}
 </template>
 
+<template name="eth_miss">
+    <h1>No web3 detected</h1><br>
+    <p>
+      Please ensure that you are using ethereum compatible browser or have <a target="_blank" href="https://metamask.io">Metamask</a> installed.
+    </p>
+</template>
+
 <template name="hello">
   <header>
     Welcome to DogTags<br><footer>also known as EthTags</footer>
@@ -30,7 +37,10 @@
 </template>
 
 <template name="iframe">
-  <p>{{address}}</p>
-  <p>{{content}}</p>
-  <p>{{signature}}</p>
+  <canvas id="code" width="150" height="150"></canvas>
+  <div class="info">
+    <p><b>{{address}}</b></p>
+    <p>{{content}}</p>
+    <p><footer>{{signature}}</footer></p>
+  </div>
 </template>

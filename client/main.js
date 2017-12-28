@@ -5,6 +5,10 @@ import './main.html';
 
 Template.hello.onCreated(function helloOnCreated() {
   // counter starts at 0
+
+  if(typeof web3 === 'undefined')
+    BlazeLayout.render('App_Body', {main: 'eth_miss'});
+
   this.counter = new ReactiveVar(0);
   EthBlocks.init();
   EthAccounts.init();
@@ -168,11 +172,28 @@ Template.iframe.helpers({
     return FlowRouter.getParam("_id");
   },
 });
-
+Template.iframe.onRendered(function () {
+  var adr = FlowRouter.getParam("_id");
+  $('#code').qrcode({
+    size: 150,
+    text: adr,
+    radius: 0.5,
+    quiet: 1,
+    exLevel: 'H',
+    mode: 2,
+    label: 'Address',
+    fontname: 'sans',
+    fontcolor: '#000',
+  });
+});
 Template.iframe.onCreated(function helloOnCreated() {
+  if(typeof web3 === 'undefined')
+    BlazeLayout.render('App_Body', {main: 'eth_miss'});
+
   this.nameAsync = new ReactiveVar("Retrieving...");
   this.contentAsync = new ReactiveVar("Retrieving...");
   this.address = FlowRouter.getParam("_id");
+
   var CoursetroContract = web3.eth.contract([
     {
       "constant": true,
