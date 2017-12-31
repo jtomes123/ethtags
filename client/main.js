@@ -3,7 +3,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
 
-Template.hello.onCreated(function helloOnCreated() {
+Template.main.onCreated(function mainOnCreated() {
   // counter starts at 0
 
   if(typeof web3 === 'undefined')
@@ -129,7 +129,7 @@ Template.hello.onCreated(function helloOnCreated() {
   } ,2500);
 });
 
-Template.hello.helpers({
+Template.main.helpers({
   name() {
     var na = Template.instance().nameAsync;
 
@@ -147,7 +147,7 @@ Template.hello.helpers({
   }
 });
 
-Template.hello.events({
+Template.main.events({
   'submit .new-post'(event, instance) {
     event.preventDefault();
     // increment the counter when button is clicked
@@ -186,7 +186,7 @@ Template.iframe.onRendered(function () {
     fontcolor: '#000',
   });
 });
-Template.iframe.onCreated(function helloOnCreated() {
+Template.iframe.onCreated(function iframeOnCreated() {
   if(typeof web3 === 'undefined')
     BlazeLayout.render('App_Body', {main: 'eth_miss'});
 
@@ -347,6 +347,6 @@ FlowRouter.route('/iframe/:_id', {
 FlowRouter.route('/', {
   name: 'main',
   action() {
-    BlazeLayout.render('App_Body', {main: 'hello'});
+    BlazeLayout.render('App_Body', {main: 'main'});
   }
 });
