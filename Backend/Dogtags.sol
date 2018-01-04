@@ -4,6 +4,8 @@ contract Dogtags {
     struct Dogtag {
         string name;
         string content;
+        bool verified;
+        bool canVerify;
     }
     
     mapping (address => Dogtag) dogtags;
@@ -14,6 +16,12 @@ contract Dogtags {
     }
     function GetDogtagName(address adr) public constant returns(string) {
         return dogtags[adr].name;
+    }
+    function IsVerifier(address adr) public constant returns(bool) {
+        return dogtags[adr].canVerify;
+    }
+    function IsVerified(address adr) public constant returns(bool) {
+        return dogtags[adr].verified;
     }
     
     //Setters
@@ -27,5 +35,14 @@ contract Dogtags {
     function SetDogtagName(string name) public {
         dogtags[msg.sender].name = name;
     }
-    
+    function Verify(address adr) public returns(string) {
+        if(dogtags[msg.sender].canVerify) {
+            dogtags[adr].verified = true;
+        }
+    }
+    function UnVerify(address adr) public returns(string) {
+        if(dogtags[msg.sender].canVerify) {
+            dogtags[adr].verified = false;
+        }
+    }
 }
