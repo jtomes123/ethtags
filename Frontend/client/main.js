@@ -4,18 +4,16 @@ import { ReactiveVar } from 'meteor/reactive-var';
 import './main.html';
 
 Template.main.onCreated(function mainOnCreated() {
-  // counter starts at 0
-
+  //Check if web3 is installed
   if(typeof web3 === 'undefined')
     BlazeLayout.render('App_Body', {main: 'eth_miss'});
 
-  this.counter = new ReactiveVar(0);
   EthBlocks.init();
   EthAccounts.init();
   this.nameAsync = new ReactiveVar("Retrieving...");
   this.contentAsync = new ReactiveVar("Retrieving...");
   this.address = new ReactiveVar("Address");
-  var CoursetroContract = web3.eth.contract([
+  var DogtagsContract = web3.eth.contract([
       {
         "constant": true,
         "inputs": [
@@ -102,23 +100,23 @@ Template.main.onCreated(function mainOnCreated() {
       }
   ]);
 
-  var Coursetro = CoursetroContract.at('0x564b3d0a2453a93790c9726031b2a848cf7a2e6b');
-  console.log(Coursetro);
-  this.dogtags = Coursetro;
+  var Dogtags = DogtagsContract.at('0x564b3d0a2453a93790c9726031b2a848cf7a2e6b');
+  console.log(Dogtags);
+  this.dogtags = Dogtags;
   var na = this.nameAsync;
   var ca = this.contentAsync;
   var adr = this.address;
   Meteor.setTimeout(function() {
     console.log(web3.eth.accounts);
     adr.set(web3.eth.accounts[0]);
-    Coursetro.GetDogtagName(web3.eth.accounts[0], function (error, result){
+    Dogtags.GetDogtagName(web3.eth.accounts[0], function (error, result){
       if(!error)
         na.set(result);
       else
           console.error(error);
     });
     
-    Coursetro.GetDogtagContent(web3.eth.accounts[0], function (error, result){
+    Dogtags.GetDogtagContent(web3.eth.accounts[0], function (error, result){
       if(!error)
       {
         ca.set(result);
@@ -150,7 +148,6 @@ Template.main.helpers({
 Template.main.events({
   'submit .new-post'(event, instance) {
     event.preventDefault();
-    // increment the counter when button is clicked
     instance.dogtags.SetDogtag(event.target.name.value, $('textarea').get(0).value, function (error, result){
       if(!error)
           console.log(result)
@@ -194,7 +191,7 @@ Template.iframe.onCreated(function iframeOnCreated() {
   this.contentAsync = new ReactiveVar("Retrieving...");
   this.address = FlowRouter.getParam("_id");
 
-  var CoursetroContract = web3.eth.contract([
+  var DogtagsContract = web3.eth.contract([
     {
       "constant": true,
       "inputs": [
@@ -281,22 +278,22 @@ Template.iframe.onCreated(function iframeOnCreated() {
     }
 ]);
 
-var Coursetro = CoursetroContract.at('0x564b3d0a2453a93790c9726031b2a848cf7a2e6b');
-console.log(Coursetro);
-this.dogtags = Coursetro;
+var Dogtags = DogtagsContract.at('0x564b3d0a2453a93790c9726031b2a848cf7a2e6b');
+console.log(Dogtags);
+this.dogtags = Dogtags;
 var na = this.nameAsync;
 var ca = this.contentAsync;
 Meteor.setTimeout(function() {
   console.log(web3.eth.accounts);
   console.log(typeof(this.address));
-  Coursetro.GetDogtagName(FlowRouter.getParam("_id"), function (error, result){
+  Dogtags.GetDogtagName(FlowRouter.getParam("_id"), function (error, result){
     if(!error)
       na.set(result);
     else
         console.error(error);
   });
   
-  Coursetro.GetDogtagContent(FlowRouter.getParam("_id"), function (error, result){
+  Dogtags.GetDogtagContent(FlowRouter.getParam("_id"), function (error, result){
     if(!error)
     {
       ca.set(result);
@@ -304,39 +301,8 @@ Meteor.setTimeout(function() {
     else
         console.error(error);
   });
-} ,2500);
+} ,1500);
 });
-
-async function getPost(id, instance)
-{
-  /*var title =null;
-  var content=null;
-  var channel=null;
-  instance.subspaceContract.getPostTitle(0, function(error, result){
-    if(!error)
-        title = result;
-    else
-        console.error(error);
-  });
-  instance.subspaceContract.getPostBody(0, function(error, result){
-    if(!error)
-        content = result;
-    else
-        console.error(error);
-  });
-  instance.subspaceContract.getPostChannel(0, function(error, result){
-    if(!error)
-    {
-        channel = result;
-    }
-    else
-        console.error(error);
-  });*/
-
-  var title = await instance.subspaceContract.getPostTitle(0);
-
-  return title;
-}
 
 FlowRouter.route('/iframe/:_id', {
   name: 'iframe',
