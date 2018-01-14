@@ -13,6 +13,7 @@ Template.main.onCreated(function mainOnCreated() {
   this.nameAsync = new ReactiveVar("Retrieving...");
   this.contentAsync = new ReactiveVar("Retrieving...");
   this.address = new ReactiveVar("Address");
+  this.link = new ReactiveVar("#");
   var DogtagsContract = web3.eth.contract([
       {
         "constant": true,
@@ -106,6 +107,7 @@ Template.main.onCreated(function mainOnCreated() {
   var na = this.nameAsync;
   var ca = this.contentAsync;
   var adr = this.address;
+  var lnk = this.link;
   Meteor.setTimeout(function() {
     console.log(web3.eth.accounts);
     adr.set(web3.eth.accounts[0]);
@@ -124,7 +126,10 @@ Template.main.onCreated(function mainOnCreated() {
       else
           console.error(error);
     });
-  } ,2500);
+  } ,750);
+  Meteor.setTimeout(function() {
+    lnk.set("http://ethtags.herokuapp.com" + "/iframe/" + adr.get());
+  }, 1000);
 });
 
 Template.main.helpers({
@@ -138,23 +143,27 @@ Template.main.helpers({
     return ca.get();
   },
   link() {
-    return "ethtags.herokuapp.com/iframe/"+Template.instance().address.get();
+    return Template.instance().link.get();
   },
   iframe() {
-    return "<iframe src=\"ethtags.herokuapp.com/iframe/"+Template.instance().address.get()+"\"></iframe>";
+    return "<iframe src=\""+ Template.instance().link.get() +"\"></iframe>";
   }
 });
 
 Template.main.events({
   'submit .new-post'(event, instance) {
-    event.preventDefault();
-    instance.dogtags.SetDogtag(event.target.name.value, $('textarea').get(0).value, function (error, result){
-      if(!error)
-          console.log(result)
-      else
-          console.error(error);
-  });
-},
+      event.preventDefault();
+      instance.dogtags.SetDogtag(event.target.name.value, $('textarea').get(0).value, function (error, result){
+        if(!error)
+            console.log(result)
+        else
+            console.error(error);
+      });
+  },
+  'change .style'(event, instance) {
+    //console.log("Change: " + $("#bgc").val() + " " + $("#textc").val() + " " + $("#showqr").is(":checked"));
+    instance.link.set("http://ethtags.herokuapp.com" + "/iframe/" + instance.address.get() + "/" + $("#showqr").is(":checked") + "/" + $("#bgc").val().replace("#", "") + "/" + $("#textc").val().replace("#", ""));
+  },
 });
 
 Template.iframe.helpers({
@@ -171,21 +180,40 @@ Template.iframe.helpers({
 });
 Template.iframe.onRendered(function () {
   var adr = FlowRouter.getParam("_id");
-  $('#code').qrcode({
-    size: 150,
-    text: adr,
-    radius: 0.5,
-    quiet: 1,
-    exLevel: 'H',
-    mode: 2,
-    label: 'Address',
-    fontname: 'sans',
-    fontcolor: '#000',
-  });
+  var bgc = FlowRouter.getParam('_bgc');
+  var textc = FlowRouter.getParam('_textc');
+  var qrcodec = '000000';
+  if(typeof(textc) != 'undefined')
+    qrcodec = textc;
+  if(FlowRouter.getParam("_showqr") != "false")
+  {
+    $('#code').qrcode({
+      size: 150,
+      text: adr,
+      radius: 0.5,
+      quiet: 1,
+      exLevel: 'H',
+      mode: 2,
+      label: 'Ethereum',
+      fontname: 'sans',
+      fontcolor: '#' + qrcodec,
+      fill: '#' + qrcodec,
+    });
+  }
+  else
+  {
+    $('#code').hide();
+  }
+
+  if(typeof(bgc) != 'undefined')
+    $('body').css('background-color', '#' + bgc);
+  if(typeof(textc) != 'undefined')
+    $('body').css('color', '#' + textc);
 });
 Template.iframe.onCreated(function iframeOnCreated() {
+  //TODO: Change to mainnet when published
   if(typeof web3 === 'undefined')
-    BlazeLayout.render('App_Body', {main: 'eth_miss'});
+    web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/'));
 
   this.nameAsync = new ReactiveVar("Retrieving...");
   this.contentAsync = new ReactiveVar("Retrieving...");
@@ -301,13 +329,34 @@ Meteor.setTimeout(function() {
     else
         console.error(error);
   });
-} ,1500);
+} ,750);
 });
 
 FlowRouter.route('/iframe/:_id', {
   name: 'iframe',
   action() {
     BlazeLayout.render('App_Body', {main: 'iframe', address: FlowRouter.getParam('_id')});
+  }
+});
+FlowRouter.route('/iframe/:_id/:_showqr', {
+  name: 'iframe',
+  action() {
+    BlazeLayout.render('App_Body', {main: 'iframe', address: FlowRouter.getParam('_id'), 
+      hideqr: FlowRouter.getParam('_showqr')});
+  }
+});
+FlowRouter.route('/iframe/:_id/:_showqr/:_bgc', {
+  name: 'iframe',
+  action() {
+    BlazeLayout.render('App_Body', {main: 'iframe', address: FlowRouter.getParam('_id'), 
+      hideqr: FlowRouter.getParam('_showqr')});
+  }
+});
+FlowRouter.route('/iframe/:_id/:_showqr/:_bgc/:_textc', {
+  name: 'iframe',
+  action() {
+    BlazeLayout.render('App_Body', {main: 'iframe', address: FlowRouter.getParam('_id'), 
+      hideqr: FlowRouter.getParam('_showqr')});
   }
 });
 FlowRouter.route('/', {

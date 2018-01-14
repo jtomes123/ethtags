@@ -28,6 +28,18 @@
       <input type="submit" text="Submit"> 
     </form>
     <div class="buttonContainer">
+      <form class="style">
+        <h3>Your Dogtag</h3>
+        <h4>Background color</h4>
+        <input id="bgc" class="colorsel" type="color" name="bgc" value="#FFFFFF">
+        <br>
+        <h4>Text color</h4>
+        <input id="textc" class="colorsel" type="color" name="textc" value="#000000">
+        <br>
+        <h4>Show address qrcode</h4>
+        <input id="showqr" type="checkbox" checked name="showqr">
+        <h4><a href="{{link}}" target="_blank">Preview</a></h4>
+      </form>
       <h4>Link:</h4>
       <code>{{link}}</code>
       <h4>iframe:</h4>
@@ -43,4 +55,5 @@
     <p>{{content}}</p>
     <p><footer>{{signature}}</footer></p>
   </div>
+  <aside class="poweredby">Powered by <a href="http://heroku.ethtags.com">Dogtags</a>.</aside>
 </template>
