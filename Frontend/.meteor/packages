@@ -28,3 +28,4 @@ ethereum:accounts
 kadira:blaze-layout
 kadira:flow-router
 dschulz:jquery-qrcode
+zenorocha:clipboard

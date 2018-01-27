@@ -1,7 +1,93 @@
 /* CSS declarations go here */
+
+//TODO::Proper scaling on devices which are taller than wider e.g. mobile not really necessary now
+
 @import '{ethereum:dapp-styles}/dapp-styles.less';
+textarea {
+    border-radius: 10pt;
+    resize: none;
+    height: 20vh;
+    border: none;
+    margin: 1vw 1vh;
+    padding: 0.5rem;
+    margin-left: -0.25rem;
+    background: #f5f4f2;
+}
+input {
+    border-radius: 10pt;
+    background: #f5f4f2;
+    height: 5vh;
+    margin: 1vw 1vh;
+    border: none;
+    padding: 0.5rem;
+    margin-left: -0.25rem;
+}
+input[type="submit"], .previewbut {
+    color: #43cea2;
+    background: #f5f4f2;
+    box-shadow: 0 0 0 1px #43cea2;
+}
+input[type="submit"]:hover, .previewbut:hover {
+    //background: #4a90e2;
+    color: #f5f4f2;
+    background: #43cea2;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #185a9d, #43cea2);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #185a9d, #43cea2);
+    box-shadow: 0 0 0 1px transparent;
+}
+input[type="submit"] {
+    width: 50%;
+    margin: auto;
+    margin-left: 25%;
+}
+.logo {
+    position: absolute;
+    top:0;
+    left: 0;
+    height: 5vh;
+    width: auto;
+}
+.previewbut {
+    padding: 0.5rem;
+    border-radius: 10pt;
+    font-size: 1em;
+    font-weight: 300;
+    width: 50%;
+    margin: auto;
+    margin-left: 25%;
+    margin-top: 0.5rem;
+}
+
+.buttonContainer input[type="color"] {
+    width: 33%;
+}
+.buttonContainer input[type="checkbox"] {
+    min-height: 5vh;
+    min-width: 5vh;
+    border-radius: 10pt;
+    color: #43cea2;
+    background: #f5f4f2;
+    box-shadow: 0 0 0 1px #43cea2;
+}
+.buttonContainer input[type="checkbox"]:checked {
+    background: #43cea2;
+    box-shadow: 0 0 0 1px transparent;
+}
+.buttonContainer input[type="checkbox"]::before, .buttonContainer input[type="checkbox"]::after {
+    display: none;
+}
+
+code {
+    display: block;
+    padding: 0.5rem;
+    border-radius: 10pt;
+}
+
+button {
+    border: none;
+}
 h1 {
-    clear: none;
+    clear: both;
     margin-bottom: 0;
 }
 body header {
@@ -22,6 +108,12 @@ body div {
 }
 body {
     padding: 5%;
+    width: 80%;
+    margin: auto;
+
+    background: #8e9eab;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #eef2f3, #8e9eab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 .new-post * {
     width: 100%;
@@ -41,6 +133,7 @@ body {
     float: left;
 }
 .buttonContainer {
+    width: 80%;
     margin: auto;
     margin-top: 0.5rem;
 }
@@ -62,9 +155,59 @@ canvas {
     float: left;
 }
 .colorsel {
-    padding: 2px;
+    padding: .5vh 1vh;
+    min-width: 5vh;
+    min-height: 5vh;
 }
 .poweredby {
     text-align: center;
     font-size: 0.75rem;
+}
+
+.menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #f5f4f2;
+    padding: 0;
+    height: 5vh;
+    width: 100vw;
+    overflow: visible;
+    //padding-left: 10%;
+
+background: #232526;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #232526 7.5%, #414345);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #232526 7.5%, #414345); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        
+}
+.menu ul {
+    display: inline-table;
+    padding: 0 25%;
+    height: 5vh;
+    margin: auto;
+    width: 100%;
+}
+.menu ul li {
+    display: table-cell;
+    margin: auto;
+    width: 33.33%;
+    height: 5vh;
+}
+.menu ul li button {
+    background: transparent;
+    color: #4a90e2;
+    height: 5vh;
+    width: 100%;
+}
+.menu ul li button:hover {
+    background: #4a90e2;
+    color: #f5f4f2;
+}
+.menu ul li button:active {
+transform: none;
+border-bottom: none;
+}
+.menu ul li button:focus {
+transform: none;
+border-bottom: none;
 }

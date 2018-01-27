@@ -1,11 +1,18 @@
 <head>
-  <title>DogTags</title>
+  <title>Ethtags</title>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
   {{>App_Body}}
 </body>
-
+ 
 <template name="App_Body">
     {{> Template.dynamic template=main}}
 </template>
@@ -18,12 +25,10 @@
 </template>
 
 <template name="main">
-  <header>
-    Welcome to DogTags<br><footer>also known as EthTags</footer>
-  </header>
+  {{>title}}
   <div class="edit">
     <form class="new-post">
-      <input type="text" name="name" placeholder="Your title" value="{{name}}"/><br>
+      <input type="text" name="name" placeholder="Your name" value="{{name}}"/><br>
       <textarea name="content" form="new-post" placeholder="Your dogtag...">{{content}}</textarea><br>
       <input type="submit" text="Submit"> 
     </form>
@@ -32,20 +37,61 @@
         <h3>Your Dogtag</h3>
         <h4>Background color</h4>
         <input id="bgc" class="colorsel" type="color" name="bgc" value="#FFFFFF">
-        <br>
         <h4>Text color</h4>
         <input id="textc" class="colorsel" type="color" name="textc" value="#000000">
-        <br>
         <h4>Show address qrcode</h4>
         <input id="showqr" type="checkbox" checked name="showqr">
-        <h4><a href="{{link}}" target="_blank">Preview</a></h4>
+        <br>
+        <a href="{{link}}" target="_blank"><button class="previewbut">Preview</button></a>
       </form>
       <h4>Link:</h4>
-      <code>{{link}}</code>
+      <code id="linkc">{{link}}</code>
+      <button class="previewbut" id="copyLinkBut" data-clipboard-target="#linkc">Copy Link</button>
       <h4>iframe:</h4>
-      <code>{{iframe}}</code>
+      <code id="iframec">{{iframe}}</code>
+      <button class="previewbut" id="copyIframeBut" data-clipboard-target="#iframec">Copy IFrame</button>
     </div>
   </div>
+</template>
+
+<template name="about">
+  {{>title}}
+  <p>
+    Ethtags is a project which lets you create your own <b>dogtag</b> which is attached to your address. 
+    The dogtag is always attached to the address that invoked the contract, in other words your friends
+    can not change your dogtag, if they do not have full access to your wallet.
+  </p>
+  <p>
+    The dogtag itself is stored in the ethereum blockchain and the data can be accessed at any time as long as
+    you have access to the ethereum blockchain. The ethtags frontend provides a simple way to access your dogtag.
+    You can get a link to it which you can then send to anyone to check out your dogtag or you can embed it as an 
+    signature anywhere where they support iframe html tag.
+  </p>
+  <p>
+    There are future plans to allow you, to get the information, specifically the name, in your dogtag verified by a 
+    trusted third party, like the post office or some other third party which would be present almost anywhere. These 
+    verified dogtags would be very handy when you need to send a larger amount of currency to a someone else and you 
+    want to be sure that it is them.
+  </p>
+  <p>
+    Ethtags is currently maintained and developed by Jakub Tomeš a casual programmer and game developer that wanted to start
+    developing smart contracts.
+  </p>
+</template>
+
+<template name="donate">
+  {{> title}}
+  <p>If you want to support the development of ethtags and help run the project you can upvote my posts on <a href="#">steemit</a>
+  or donate to this ethereum address: ### every little bit helps.</p>
+</template>
+
+<template name="help">
+  <p>Still under construction.</p>
+</template>
+
+<template name="faq">
+  {{> title}}
+  <p>Still under construction.</p>
 </template>
 
 <template name="iframe">
@@ -55,5 +101,19 @@
     <p>{{content}}</p>
     <p><footer>{{signature}}</footer></p>
   </div>
-  <aside class="poweredby">Powered by <a href="http://heroku.ethtags.com">Dogtags</a>.</aside>
+  <aside class="poweredby">Powered by <a href="http://heroku.ethtags.com">Ethtags</a>.</aside>
+</template>
+
+<template name="title">
+  <div class="menu">
+    <img src="icon.svg" class="logo">
+    <ul>
+      <li><button class="but_home">Home</button></li>
+      <li><button class="but_about">About</button></li>
+      <li><button class="but_faq">FAQ</button></li>
+    </ul>
+  </div>
+  <header>
+    Welcome to Ethtags<br><footer>also known as Dogtags</footer>
+  </header>
 </template>

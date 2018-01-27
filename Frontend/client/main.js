@@ -12,8 +12,12 @@ Template.main.onCreated(function mainOnCreated() {
   EthAccounts.init();
   this.nameAsync = new ReactiveVar("Retrieving...");
   this.contentAsync = new ReactiveVar("Retrieving...");
-  this.address = new ReactiveVar("Address");
-  this.link = new ReactiveVar("#");
+  this.address = new ReactiveVar("0xc000a000a000aa00a00a0a00a00aa0000a000000");
+  this.link = new ReactiveVar("http://ethtags.herokuapp.com/0xc000a000a000aa00a00a0a00a00aa0000a000000/true/ffffff/000000");
+
+  new Clipboard('#copyLinkBut');
+  new Clipboard('#copyIframeBut');
+
   var DogtagsContract = web3.eth.contract([
       {
         "constant": true,
@@ -128,7 +132,7 @@ Template.main.onCreated(function mainOnCreated() {
     });
   } ,750);
   Meteor.setTimeout(function() {
-    lnk.set("http://ethtags.herokuapp.com" + "/iframe/" + adr.get());
+    lnk.set("http://ethtags.herokuapp.com" + "/iframe/" + adr.get() + "/true/ffffff/000000");
   }, 1000);
 });
 
@@ -165,6 +169,19 @@ Template.main.events({
     instance.link.set("http://ethtags.herokuapp.com" + "/iframe/" + instance.address.get() + "/" + $("#showqr").is(":checked") + "/" + $("#bgc").val().replace("#", "") + "/" + $("#textc").val().replace("#", ""));
   },
 });
+Template.title.events({
+  'click .but_home'(event, instance) {
+    FlowRouter.go('main');
+  },
+  'click .but_about'(event, instance) {
+    FlowRouter.go('about');
+  },
+  'click .but_faq'(event, instance) {
+    FlowRouter.go('faq');
+  },
+});
+
+
 
 Template.iframe.helpers({
   content(){
@@ -206,7 +223,9 @@ Template.iframe.onRendered(function () {
   }
 
   if(typeof(bgc) != 'undefined')
-    $('body').css('background-color', '#' + bgc);
+    $('body').css('background', '#' + bgc);
+  else
+    $('body').css('background', '#FFFFFF');
   if(typeof(textc) != 'undefined')
     $('body').css('color', '#' + textc);
 });
@@ -365,3 +384,16 @@ FlowRouter.route('/', {
     BlazeLayout.render('App_Body', {main: 'main'});
   }
 });
+FlowRouter.route('/about', {
+  name: 'about',
+  action() {
+    BlazeLayout.render('App_Body', {main: 'about'});
+  }
+});
+FlowRouter.route('/faq', {
+  name: 'faq',
+  action() {
+    BlazeLayout.render('App_Body', {main: 'faq'});
+  }
+});
+

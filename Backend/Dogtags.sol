@@ -36,12 +36,12 @@ contract Dogtags {
         dogtags[msg.sender].name = name;
     }
     function Verify(address adr) public returns(string) {
-        if(dogtags[msg.sender].canVerify) {
+        if (dogtags[msg.sender].canVerify) {
             dogtags[adr].verified = true;
         }
     }
     function UnVerify(address adr) public returns(string) {
-        if(dogtags[msg.sender].canVerify) {
+        if (dogtags[msg.sender].canVerify) {
             dogtags[adr].verified = false;
         }
     }
