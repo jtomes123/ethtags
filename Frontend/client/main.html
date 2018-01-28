@@ -41,8 +41,8 @@
         <h4>Show address qrcode</h4>
         <input id="showqr" type="checkbox" checked name="showqr">
         <br>
-        <a href="{{link}}" target="_blank"><button class="previewbut">Preview</button></a>
       </form>
+      <button class="previewbut" onclick="{var w = window.open('{{link}}', '_blank'); w.focus(); event.preventDefault();}">Preview</button>
       <h4>Link:</h4>
       <code id="linkc">{{link}}</code>
       <button class="previewbut" id="copyLinkBut" data-clipboard-target="#linkc">Copy Link</button>
