@@ -6,10 +6,16 @@ contract Dogtags {
         string content;
         bool verified;
         bool canVerify;
+        bool isAdmin;
     }
     
     mapping (address => Dogtag) dogtags;
+    address owner;
     
+    function Dogtags() public {
+        owner = msg.sender;
+    }
+
     //Getters
     function GetDogtagContent(address adr) public constant returns(string) {
         return dogtags[adr].content;
@@ -35,14 +41,54 @@ contract Dogtags {
     function SetDogtagName(string name) public {
         dogtags[msg.sender].name = name;
     }
-    function Verify(address adr) public returns(string) {
-        if (dogtags[msg.sender].canVerify) {
-            dogtags[adr].verified = true;
+    function SetNewOwner(address adr) public {
+        if(msg.sender == owner) {
+            owner = adr;
         }
     }
-    function UnVerify(address adr) public returns(string) {
-        if (dogtags[msg.sender].canVerify) {
-            dogtags[adr].verified = false;
+
+    //
+    function GiveRightToVerify(address adr) public {
+        if(msg.sender == owner || dogtags[msg.sender].isAdmin) {
+            dogtags[adr].canVerify = true;
+        }
+    }
+    function TakeRightToVerify(address adr) public {
+        if(msg.sender == owner || dogtags[msg.sender].isAdmin) {
+            dogtags[adr].canVerify = false;
+        }
+    }
+    function SetAdminStatus(address adr, bool status) {
+        if (msg.sender == owner) {
+            if (dogtags[adr].isAdmin != status) {
+                dogtags[adr].isAdmin = status;
+            } else {
+                revert();
+            }
+        } else {
+            revert();
+        }
+    }
+    function SetVerificationStatus(address adr, bool status) {
+        if (dogtags[msg.sender].canVerify || msg.sender == owner) {
+            if (dogtags[adr].verified != status) {
+                dogtags[adr].verified = status;
+            } else {
+                revert();
+            }
+        } else {
+            revert();
+        }
+    }
+    function SetVerifierStatus(address adr, bool status) {
+        if(msg.sender == owner || dogtags[msg.sender].isAdmin) {
+            if (dogtags[adr].canVerify != status) {
+                dogtags[adr].canVerify = status;
+            } else {
+                revert();
+            }
+        } else {
+            revert();
         }
     }
 }
