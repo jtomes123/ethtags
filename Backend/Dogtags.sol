@@ -46,18 +46,6 @@ contract Dogtags {
             owner = adr;
         }
     }
-
-    //
-    function GiveRightToVerify(address adr) public {
-        if(msg.sender == owner || dogtags[msg.sender].isAdmin) {
-            dogtags[adr].canVerify = true;
-        }
-    }
-    function TakeRightToVerify(address adr) public {
-        if(msg.sender == owner || dogtags[msg.sender].isAdmin) {
-            dogtags[adr].canVerify = false;
-        }
-    }
     function SetAdminStatus(address adr, bool status) {
         if (msg.sender == owner) {
             if (dogtags[adr].isAdmin != status) {
@@ -81,7 +69,7 @@ contract Dogtags {
         }
     }
     function SetVerifierStatus(address adr, bool status) {
-        if(msg.sender == owner || dogtags[msg.sender].isAdmin) {
+        if (msg.sender == owner || dogtags[msg.sender].isAdmin) {
             if (dogtags[adr].canVerify != status) {
                 dogtags[adr].canVerify = status;
             } else {
