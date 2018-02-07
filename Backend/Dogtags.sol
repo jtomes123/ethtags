@@ -53,7 +53,7 @@ contract Dogtags {
             owner = adr;
         }
     }
-    function SetAdminStatus(address adr, bool status) {
+    function SetAdminStatus(address adr, bool status) public {
         if (msg.sender == owner) {
             if (dogtags[adr].isAdmin != status) {
                 dogtags[adr].isAdmin = status;
