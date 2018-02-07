@@ -47,6 +47,7 @@ contract Dogtags {
     }
     function SetDogtagName(string name) public {
         dogtags[msg.sender].name = name;
+        dogtags[msg.sender].verified = false;
     }
     function SetNewOwner(address adr) public {
         if(msg.sender == owner) {
