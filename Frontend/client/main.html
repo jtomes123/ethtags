@@ -103,14 +103,21 @@
   <div class="info">
     <p><b>{{address}}</b></p>
     <p>{{content}}</p>
-    <p><footer>{{signature}}</footer></p>
+    <p><footer>
+        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="0 0 32 32" width="32" height="32">
+          <defs><clipPath id="_clipPath_S1QGaXOCBixV7oVcSC9d9vzvpIWyZr2K"><rect width="32" height="32"/></clipPath></defs>
+            <g clip-path="url(#_clipPath_S1QGaXOCBixV7oVcSC9d9vzvpIWyZr2K)">
+            <path d=" M 5.118 16 C 5.118 9.994 9.994 5.118 16 5.118 C 22.006 5.118 26.882 9.994 26.882 16 C 26.882 22.006 22.006 26.882 16 26.882 C 9.994 26.882 5.118 22.006 5.118 16 Z  M 9.8 16.4 L 9.2 15.6 L 10.8 14.4 L 11.4 15.2 L 14.7 19.6 L 15.1 19.8 L 15.5 19.5 L 20.6 10.6 L 21 9.7 L 22.8 10.7 L 22.3 11.6 L 17 20.9 L 15.2 22.1 L 13.4 21.1 L 9.8 16.4 Z " fill-rule="evenodd" fill="rgb(255,255,255)"/></g>
+        </svg>
+        {{signature}}
+    </footer></p>
   </div>
   <aside class="poweredby">Powered by <a href="http://heroku.ethtags.com">Ethtags</a>.</aside>
 </template>
 
 <template name="title">
   <div class="menu">
-    <img src="icon.svg" class="logo">
+    <img src="/icon.svg" class="logo">
     <ul>
       <li><button class="but_home">Home</button></li>
       <li><button class="but_about">About</button></li>
