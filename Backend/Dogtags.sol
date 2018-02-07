@@ -29,6 +29,13 @@ contract Dogtags {
     function IsVerified(address adr) public constant returns(bool) {
         return dogtags[adr].verified;
     }
+    function IsAdmin(address adr) public constant returns(bool) {
+        return dogtags[adr].isAdmin;
+    }
+    function IsOwner(address adr) public constant returns(bool) {
+        return (adr == owner);
+    }
+    
     
     //Setters
     function SetDogtag(string name, string content) public {
@@ -57,7 +64,7 @@ contract Dogtags {
             revert();
         }
     }
-    function SetVerificationStatus(address adr, bool status) {
+    function SetVerificationStatus(address adr, bool status) public {
         if (dogtags[msg.sender].canVerify || msg.sender == owner) {
             if (dogtags[adr].verified != status) {
                 dogtags[adr].verified = status;
@@ -68,7 +75,7 @@ contract Dogtags {
             revert();
         }
     }
-    function SetVerifierStatus(address adr, bool status) {
+    function SetVerifierStatus(address adr, bool status) public {
         if (msg.sender == owner || dogtags[msg.sender].isAdmin) {
             if (dogtags[adr].canVerify != status) {
                 dogtags[adr].canVerify = status;
