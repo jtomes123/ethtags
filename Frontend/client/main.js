@@ -3,6 +3,246 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
 
+function getContract() {
+  var DogtagsContract = web3.eth.contract([
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        }
+      ],
+      "name": "IsAdmin",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        }
+      ],
+      "name": "GetDogtagName",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        }
+      ],
+      "name": "IsOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        }
+      ],
+      "name": "IsVerified",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        }
+      ],
+      "name": "IsVerifier",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        }
+      ],
+      "name": "GetDogtagContent",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "content",
+          "type": "string"
+        }
+      ],
+      "name": "SetDogtag",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        },
+        {
+          "name": "status",
+          "type": "bool"
+        }
+      ],
+      "name": "SetVerifierStatus",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        },
+        {
+          "name": "status",
+          "type": "bool"
+        }
+      ],
+      "name": "SetVerificationStatus",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        }
+      ],
+      "name": "SetNewOwner",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "name",
+          "type": "string"
+        }
+      ],
+      "name": "SetDogtagName",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        },
+        {
+          "name": "status",
+          "type": "bool"
+        }
+      ],
+      "name": "SetAdminStatus",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "content",
+          "type": "string"
+        }
+      ],
+      "name": "SetDogtagContent",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]);
+  return DogtagsContract.at('0x0691b26ee7c91a1518b3e6b7adbefb31b402d951'); //Old address: 0x564b3d0a2453a93790c9726031b2a848cf7a2e6b
+}
+
 Template.main.onCreated(function mainOnCreated() {
   //Check if web3 is installed
   if(typeof web3 === 'undefined')
@@ -18,94 +258,7 @@ Template.main.onCreated(function mainOnCreated() {
   new Clipboard('#copyLinkBut');
   new Clipboard('#copyIframeBut');
 
-  var DogtagsContract = web3.eth.contract([
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "adr",
-            "type": "address"
-          }
-        ],
-        "name": "GetDogtagContent",
-        "outputs": [
-          {
-            "name": "",
-            "type": "string"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [
-          {
-            "name": "adr",
-            "type": "address"
-          }
-        ],
-        "name": "GetDogtagName",
-        "outputs": [
-          {
-            "name": "",
-            "type": "string"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "content",
-            "type": "string"
-          }
-        ],
-        "name": "SetDogtagContent",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "name",
-            "type": "string"
-          }
-        ],
-        "name": "SetDogtagName",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "content",
-            "type": "string"
-          }
-        ],
-        "name": "SetDogtag",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      }
-  ]);
-
-  var Dogtags = DogtagsContract.at('0x564b3d0a2453a93790c9726031b2a848cf7a2e6b');
+  var Dogtags = getContract();
   console.log(Dogtags);
   this.dogtags = Dogtags;
   var na = this.nameAsync;
@@ -227,7 +380,10 @@ Template.iframe.onRendered(function () {
   else
     $('body').css('background', '#FFFFFF');
   if(typeof(textc) != 'undefined')
+  {
     $('body').css('color', '#' + textc);
+    $(".checkmark g path").css("fill", "#" + textc);
+  }
 });
 Template.iframe.onCreated(function iframeOnCreated() {
   //TODO: Change to mainnet when published
@@ -238,101 +394,15 @@ Template.iframe.onCreated(function iframeOnCreated() {
   this.contentAsync = new ReactiveVar("Retrieving...");
   this.address = FlowRouter.getParam("_id");
 
-  var DogtagsContract = web3.eth.contract([
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "adr",
-          "type": "address"
-        }
-      ],
-      "name": "GetDogtagContent",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "adr",
-          "type": "address"
-        }
-      ],
-      "name": "GetDogtagName",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "content",
-          "type": "string"
-        }
-      ],
-      "name": "SetDogtagContent",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "name",
-          "type": "string"
-        }
-      ],
-      "name": "SetDogtagName",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "name",
-          "type": "string"
-        },
-        {
-          "name": "content",
-          "type": "string"
-        }
-      ],
-      "name": "SetDogtag",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
-    }
-]);
-
-var Dogtags = DogtagsContract.at('0x564b3d0a2453a93790c9726031b2a848cf7a2e6b');
+//Gets the instance of Dogtags contract
+var Dogtags = getContract();
 console.log(Dogtags);
 this.dogtags = Dogtags;
 var na = this.nameAsync;
 var ca = this.contentAsync;
+
+//Wait for web3 to be injected, to be replaced in future with more efficient logic
 Meteor.setTimeout(function() {
-  console.log(web3.eth.accounts);
-  console.log(typeof(this.address));
   Dogtags.GetDogtagName(FlowRouter.getParam("_id"), function (error, result){
     if(!error)
       na.set(result);
@@ -344,6 +414,19 @@ Meteor.setTimeout(function() {
     if(!error)
     {
       ca.set(result);
+    }
+    else
+        console.error(error);
+  });
+
+  Dogtags.IsVerified(FlowRouter.getParam("_id"), function(error, result){
+    if(!error)
+    {
+      if(!result)
+      {
+        // User is not verified, hide the checkmark
+        $(".checkmark").hide();
+      }
     }
     else
         console.error(error);
