@@ -128,3 +128,32 @@
     Welcome to Ethtags<br><footer>also known as Dogtags</footer>
   </header>
 </template>
+
+<template name="verification">
+  {{>title}}
+  <div class="edit">
+    <form class="new-post">
+      <input id="address" type="text" placeholder="Address">
+    </form>
+    <button class="previewbut" id="continueBut">Continue</button>
+  </div>
+</template>
+
+<template name="verificationConfirm">
+    {{>title}}
+  <div class="verificationInfo"> 
+    <h4>Dogtag</h4>
+    <p>Name: {{signature}}</p>
+    <p>Address: {{address}}</p>
+    <p>Bio:<br>{{content}}</p>
+  </div>
+  <button class="previewbut" id="verifyBut">Verify</button>
+</template>
+
+<template name="verificationNotAVerifier">
+  {{>title}}
+  <div class="verificationInfo">
+    Your address does not seem to possess the ability to verify others, please contact the developers. 
+    Sending a transaction with a verification from this address will have no result.
+  </div>
+</template>

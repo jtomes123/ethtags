@@ -242,7 +242,9 @@ function getContract() {
   ]);
   return DogtagsContract.at('0x0691b26ee7c91a1518b3e6b7adbefb31b402d951'); //Old address: 0x564b3d0a2453a93790c9726031b2a848cf7a2e6b
 }
-
+//--------------------------------------------------------
+//Main
+//--------------------------------------------------------
 Template.main.onCreated(function mainOnCreated() {
   //Check if web3 is installed
   if(typeof web3 === 'undefined')
@@ -288,7 +290,6 @@ Template.main.onCreated(function mainOnCreated() {
     lnk.set("http://ethtags.herokuapp.com" + "/iframe/" + adr.get() + "/true/ffffff/000000");
   }, 1000);
 });
-
 Template.main.helpers({
   name() {
     var na = Template.instance().nameAsync;
@@ -306,7 +307,6 @@ Template.main.helpers({
     return "<iframe src=\""+ Template.instance().link.get() +"\"></iframe>";
   }
 });
-
 Template.main.events({
   'submit .new-post'(event, instance) {
       event.preventDefault();
@@ -322,6 +322,10 @@ Template.main.events({
     instance.link.set("http://ethtags.herokuapp.com" + "/iframe/" + instance.address.get() + "/" + $("#showqr").is(":checked") + "/" + $("#bgc").val().replace("#", "") + "/" + $("#textc").val().replace("#", ""));
   },
 });
+
+//--------------------------------------------------------
+//Menu
+//--------------------------------------------------------
 Template.title.events({
   'click .but_home'(event, instance) {
     FlowRouter.go('main');
@@ -334,8 +338,115 @@ Template.title.events({
   },
 });
 
+//--------------------------------------------------------
+//Verification
+//--------------------------------------------------------
+Template.verification.events({
+  'click #continueBut'(event, instance) {
+    FlowRouter.go('/vercon/' + $("#address").val());
+  },
+});
+Template.verification.onCreated(function mainOnCreated() {
+  //Check if web3 is installed
+  if(typeof web3 === 'undefined')
+    BlazeLayout.render('App_Body', {main: 'eth_miss'});
+
+  this.address = new ReactiveVar("0xc000a000a000aa00a00a0a00a00aa0000a000000");
 
 
+  var Dogtags = getContract();
+  console.log(Dogtags);
+  this.dogtags = Dogtags;
+  var adr = this.address;
+  Meteor.setTimeout(function() {
+    console.log(web3.eth.accounts);
+    adr.set(web3.eth.accounts[0]);
+    Dogtags.IsVerifier(web3.eth.accounts[0], function (error, result){
+      if(!error)
+      {
+        if(!result)
+          BlazeLayout.render('verificationNotAVerifier');
+      }
+      else
+          console.error(error);
+    });
+  } ,750);
+});
+
+Template.verificationConfirm.events({
+  'click #verifyBut'(event, instance) {
+    instance.data.dogtags.SetVerificationStatus(instance.address, true, function (error, result){
+      if(!error)
+        FlowRouter.go("/ver");
+      else
+          console.error(error);
+    });
+  },
+});
+Template.verificationConfirm.helpers({
+  content(){
+    return Template.instance().contentAsync.get();
+  },
+  signature(){
+
+    return Template.instance().nameAsync.get();
+  },
+  address(){
+    return FlowRouter.getParam("_id");
+  },
+});
+Template.verificationConfirm.onCreated(function verconOnCreated() {
+  //TODO: Change to mainnet when published
+  if(typeof web3 === 'undefined')
+    web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/'));
+
+  this.nameAsync = new ReactiveVar("Retrieving...");
+  this.contentAsync = new ReactiveVar("Retrieving...");
+  this.address = FlowRouter.getParam("_id");
+
+  //Gets the instance of Dogtags contract
+  var Dogtags = getContract();
+  console.log(Dogtags);
+  this.data.dogtags = Dogtags;
+  var na = this.nameAsync;
+  var ca = this.contentAsync;
+
+  //Wait for web3 to be injected, to be replaced in future with more efficient logic
+  Meteor.setTimeout(function() {
+    Dogtags.GetDogtagName(FlowRouter.getParam("_id"), function (error, result){
+      if(!error)
+        na.set(result);
+      else
+          console.error(error);
+    });
+    
+    Dogtags.GetDogtagContent(FlowRouter.getParam("_id"), function (error, result){
+      if(!error)
+      {
+        ca.set(result);
+      }
+      else
+          console.error(error);
+    });
+
+    Dogtags.IsVerified(FlowRouter.getParam("_id"), function(error, result){
+      if(!error)
+      {
+        if(!result)
+        {
+          // User is not verified, hide the checkmark
+          $(".checkmark").hide();
+        }
+      }
+      else
+          console.error(error);
+    });
+  } ,750);
+});
+
+//--------------------------------------------------------
+//Iframe
+//--------------------------------------------------------
 Template.iframe.helpers({
   content(){
     return Template.instance().contentAsync.get();
@@ -394,89 +505,45 @@ Template.iframe.onCreated(function iframeOnCreated() {
   this.contentAsync = new ReactiveVar("Retrieving...");
   this.address = FlowRouter.getParam("_id");
 
-//Gets the instance of Dogtags contract
-var Dogtags = getContract();
-console.log(Dogtags);
-this.dogtags = Dogtags;
-var na = this.nameAsync;
-var ca = this.contentAsync;
+  //Gets the instance of Dogtags contract
+  var Dogtags = getContract();
+  console.log(Dogtags);
+  this.dogtags = Dogtags;
+  var na = this.nameAsync;
+  var ca = this.contentAsync;
 
-//Wait for web3 to be injected, to be replaced in future with more efficient logic
-Meteor.setTimeout(function() {
-  Dogtags.GetDogtagName(FlowRouter.getParam("_id"), function (error, result){
-    if(!error)
-      na.set(result);
-    else
-        console.error(error);
-  });
-  
-  Dogtags.GetDogtagContent(FlowRouter.getParam("_id"), function (error, result){
-    if(!error)
-    {
-      ca.set(result);
-    }
-    else
-        console.error(error);
-  });
-
-  Dogtags.IsVerified(FlowRouter.getParam("_id"), function(error, result){
-    if(!error)
-    {
-      if(!result)
+  //Wait for web3 to be injected, to be replaced in future with more efficient logic
+  Meteor.setTimeout(function() {
+    Dogtags.GetDogtagName(FlowRouter.getParam("_id"), function (error, result){
+      if(!error)
+        na.set(result);
+      else
+          console.error(error);
+    });
+    
+    Dogtags.GetDogtagContent(FlowRouter.getParam("_id"), function (error, result){
+      if(!error)
       {
-        // User is not verified, hide the checkmark
-        $(".checkmark").hide();
+        ca.set(result);
       }
-    }
-    else
-        console.error(error);
-  });
-} ,750);
+      else
+          console.error(error);
+    });
+
+    Dogtags.IsVerified(FlowRouter.getParam("_id"), function(error, result){
+      if(!error)
+      {
+        if(!result)
+        {
+          // User is not verified, hide the checkmark
+          $(".checkmark").hide();
+        }
+      }
+      else
+          console.error(error);
+    });
+  } ,750);
 });
 
-FlowRouter.route('/iframe/:_id', {
-  name: 'iframe',
-  action() {
-    BlazeLayout.render('App_Body', {main: 'iframe', address: FlowRouter.getParam('_id')});
-  }
-});
-FlowRouter.route('/iframe/:_id/:_showqr', {
-  name: 'iframe',
-  action() {
-    BlazeLayout.render('App_Body', {main: 'iframe', address: FlowRouter.getParam('_id'), 
-      hideqr: FlowRouter.getParam('_showqr')});
-  }
-});
-FlowRouter.route('/iframe/:_id/:_showqr/:_bgc', {
-  name: 'iframe',
-  action() {
-    BlazeLayout.render('App_Body', {main: 'iframe', address: FlowRouter.getParam('_id'), 
-      hideqr: FlowRouter.getParam('_showqr')});
-  }
-});
-FlowRouter.route('/iframe/:_id/:_showqr/:_bgc/:_textc', {
-  name: 'iframe',
-  action() {
-    BlazeLayout.render('App_Body', {main: 'iframe', address: FlowRouter.getParam('_id'), 
-      hideqr: FlowRouter.getParam('_showqr')});
-  }
-});
-FlowRouter.route('/', {
-  name: 'main',
-  action() {
-    BlazeLayout.render('App_Body', {main: 'main'});
-  }
-});
-FlowRouter.route('/about', {
-  name: 'about',
-  action() {
-    BlazeLayout.render('App_Body', {main: 'about'});
-  }
-});
-FlowRouter.route('/faq', {
-  name: 'faq',
-  action() {
-    BlazeLayout.render('App_Body', {main: 'faq'});
-  }
-});
+
 
