@@ -7,6 +7,8 @@ contract Dogtags {
         bool verified;
         bool canVerify;
         bool isAdmin;
+
+        address verifier;
     }
     
     mapping (address => Dogtag) dogtags;
@@ -23,14 +25,17 @@ contract Dogtags {
     function GetDogtagName(address adr) public constant returns(string) {
         return dogtags[adr].name;
     }
+    function GetVerifier(address adr) public constant returns(address) {
+        return dogtags[adr].verifier;
+    }
     function IsVerifier(address adr) public constant returns(bool) {
-        return dogtags[adr].canVerify;
+        return dogtags[adr].canVerify || dogtags[adr].isAdmin || (adr == owner);
     }
     function IsVerified(address adr) public constant returns(bool) {
         return dogtags[adr].verified;
     }
     function IsAdmin(address adr) public constant returns(bool) {
-        return dogtags[adr].isAdmin;
+        return dogtags[adr].isAdmin || (adr == owner);
     }
     function IsOwner(address adr) public constant returns(bool) {
         return (adr == owner);
@@ -41,6 +46,7 @@ contract Dogtags {
     function SetDogtag(string name, string content) public {
         dogtags[msg.sender].name = name;
         dogtags[msg.sender].content = content;
+        dogtags[msg.sender].verified = false;
     }
     function SetDogtagContent(string content) public {
         dogtags[msg.sender].content = content;
@@ -69,6 +75,7 @@ contract Dogtags {
         if (dogtags[msg.sender].canVerify || msg.sender == owner) {
             if (dogtags[adr].verified != status) {
                 dogtags[adr].verified = status;
+                dogtags[adr].verifier = msg.sender;
             } else {
                 revert();
             }
