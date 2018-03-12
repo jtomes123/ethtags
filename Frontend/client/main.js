@@ -13,7 +13,44 @@ function getContract() {
           "type": "address"
         }
       ],
-      "name": "IsAdmin",
+      "name": "GetDogtagContent",
+      "outputs": [
+        {
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        },
+        {
+          "name": "status",
+          "type": "bool"
+        }
+      ],
+      "name": "SetAdminStatus",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        }
+      ],
+      "name": "IsVerifier",
       "outputs": [
         {
           "name": "",
@@ -44,22 +81,31 @@ function getContract() {
       "type": "function"
     },
     {
-      "constant": true,
+      "constant": false,
       "inputs": [
         {
-          "name": "adr",
-          "type": "address"
+          "name": "content",
+          "type": "string"
         }
       ],
-      "name": "IsOwner",
-      "outputs": [
+      "name": "SetDogtagContent",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
         {
-          "name": "",
-          "type": "bool"
+          "name": "amount",
+          "type": "uint256"
         }
       ],
+      "name": "Withdraw",
+      "outputs": [],
       "payable": false,
-      "stateMutability": "view",
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -82,77 +128,36 @@ function getContract() {
       "type": "function"
     },
     {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "adr",
-          "type": "address"
-        }
-      ],
-      "name": "IsVerifier",
-      "outputs": [
-        {
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "name": "adr",
-          "type": "address"
-        }
-      ],
-      "name": "GetDogtagContent",
-      "outputs": [
-        {
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "constant": false,
       "inputs": [
         {
           "name": "name",
           "type": "string"
-        },
-        {
-          "name": "content",
-          "type": "string"
         }
       ],
-      "name": "SetDogtag",
+      "name": "SetDogtagName",
       "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
+      "payable": true,
+      "stateMutability": "payable",
       "type": "function"
     },
     {
-      "constant": false,
+      "constant": true,
       "inputs": [
         {
           "name": "adr",
           "type": "address"
-        },
+        }
+      ],
+      "name": "IsAdmin",
+      "outputs": [
         {
-          "name": "status",
+          "name": "",
           "type": "bool"
         }
       ],
-      "name": "SetVerifierStatus",
-      "outputs": [],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -177,6 +182,24 @@ function getContract() {
       "constant": false,
       "inputs": [
         {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "content",
+          "type": "string"
+        }
+      ],
+      "name": "SetDogtag",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
           "name": "adr",
           "type": "address"
         }
@@ -189,16 +212,30 @@ function getContract() {
     },
     {
       "constant": false,
+      "inputs": [],
+      "name": "Donate",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": true,
       "inputs": [
         {
-          "name": "name",
-          "type": "string"
+          "name": "adr",
+          "type": "address"
         }
       ],
-      "name": "SetDogtagName",
-      "outputs": [],
+      "name": "IsOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -213,10 +250,43 @@ function getContract() {
           "type": "bool"
         }
       ],
-      "name": "SetAdminStatus",
+      "name": "SetVerifierStatus",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "GetContractBalance",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "adr",
+          "type": "address"
+        }
+      ],
+      "name": "GetVerifier",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -224,23 +294,9 @@ function getContract() {
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "constructor"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {
-          "name": "content",
-          "type": "string"
-        }
-      ],
-      "name": "SetDogtagContent",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "nonpayable",
-      "type": "function"
     }
   ]);
-  return DogtagsContract.at('0x0691b26ee7c91a1518b3e6b7adbefb31b402d951'); //Old address: 0x564b3d0a2453a93790c9726031b2a848cf7a2e6b
+  return DogtagsContract.at('0x0305c3463f4efd55466a4b09df63a3483da5fd00'); //Old address: 0x564b3d0a2453a93790c9726031b2a848cf7a2e6b, 0x0691b26ee7c91a1518b3e6b7adbefb31b402d951
 }
 //--------------------------------------------------------
 //Main
@@ -263,6 +319,7 @@ Template.main.onCreated(function mainOnCreated() {
   var Dogtags = getContract();
   console.log(Dogtags);
   this.dogtags = Dogtags;
+  this.data.dogtags = Dogtags;
   var na = this.nameAsync;
   var ca = this.contentAsync;
   var adr = this.address;
@@ -310,12 +367,10 @@ Template.main.helpers({
 Template.main.events({
   'submit .new-post'(event, instance) {
       event.preventDefault();
-      instance.dogtags.SetDogtag(event.target.name.value, $('textarea').get(0).value, function (error, result){
-        if(!error)
-            console.log(result)
-        else
-            console.error(error);
-      });
+      $("#popupAdr").text("Address: " + web3.eth.accounts[0]);
+      $("#popupName").text("Name: " + $("#dogtagName").get(0).value);
+      $("#popupCon").text("Content: " + $('#dogtagContent').get(0).value);
+      $("#confirmDogtagPopup").css("display", "block");
   },
   'change .style'(event, instance) {
     //console.log("Change: " + $("#bgc").val() + " " + $("#textc").val() + " " + $("#showqr").is(":checked"));
@@ -337,7 +392,23 @@ Template.title.events({
     FlowRouter.go('faq');
   },
 });
-
+//--------------------------------------------------------
+//Confirm dogtag popup
+//--------------------------------------------------------
+Template.confirmDogtagPopup.events({
+  'click #cancel'(event, instance) {
+    $("#confirmDogtagPopup").css("display", "none");
+  },
+  'click #confirm' (event, instance) {
+    Template.parentData(2).data.dogtags.SetDogtag($("#dogtagName").get(0).value, $('#dogtagContent').get(0).value, {from: web3.eth.accounts[0], gas: 3000000, value: 1000000000000000000 * $("#ethDonateAmount").get(0).value}, function (error, result){
+      if(!error)
+          console.log(result)
+      else
+          console.error(error);
+    });
+    $("#confirmDogtagPopup").css("display", "none");
+  }
+});
 //--------------------------------------------------------
 //Verification
 //--------------------------------------------------------

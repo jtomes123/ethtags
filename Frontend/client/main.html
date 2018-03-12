@@ -28,11 +28,12 @@
 
 <template name="main">
   {{>title}}
+  {{>confirmDogtagPopup}}
   <div class="edit">
     <form class="new-post">
-      <input type="text" name="name" placeholder="Your name" value="{{name}}"/><br>
-      <textarea name="content" form="new-post" placeholder="Your dogtag...">{{content}}</textarea><br>
-      <input type="submit" text="Submit"> 
+      <input id="dogtagName" type="text" name="name" placeholder="Your name" value="{{name}}"/><br>
+      <textarea id="dogtagContent" name="content" form="new-post" placeholder="Your dogtag...">{{content}}</textarea><br>
+      <input type="submit" text="Review"> 
     </form>
     <div class="buttonContainer">
       <form class="style">
@@ -155,5 +156,17 @@
   <div class="verificationInfo">
     Your address does not seem to possess the ability to verify others, please contact the developers. 
     Sending a transaction with a verification from this address will have no result.
+  </div>
+</template>
+<template name="confirmDogtagPopup">
+  <div class="popup" id="confirmDogtagPopup">
+    <div class="popupContent">
+      <div class="popupHeader">Revision</div>
+      <p id="popupAdr">Address: xxx</p>
+      <p id="popupName">Name: xxx</p>
+      <p id="popupCon">Bio: xxx</p>
+      <p style="display: flex; justify-content: space-around; align-items: center;">Do you want to donate to the contract? <input type="number" step="0.0001" placeholder="0.5 ETH" id="ethDonateAmount"></p>
+      <button class="previewbut" id="confirm">Confirm</button><button class="previewbut" id="cancel">Cancel</button>
+    </div>
   </div>
 </template>
