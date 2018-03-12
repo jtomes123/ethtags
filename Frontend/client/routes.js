@@ -55,3 +55,9 @@ FlowRouter.route('/iframe/:_id', {
       BlazeLayout.render('App_Body', {main: 'verificationConfirm', id: FlowRouter.getParam("_id")});
     }
   });
+  FlowRouter.route('/withdraw', {
+    name: 'withdraw',
+    action() {
+      BlazeLayout.render('App_Body', {main: 'withdraw'});
+    }
+  });

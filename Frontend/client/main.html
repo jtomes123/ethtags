@@ -158,6 +158,7 @@
     Sending a transaction with a verification from this address will have no result.
   </div>
 </template>
+
 <template name="confirmDogtagPopup">
   <div class="popup" id="confirmDogtagPopup">
     <div class="popupContent">
@@ -169,4 +170,11 @@
       <button class="previewbut" id="confirm">Confirm</button><button class="previewbut" id="cancel">Cancel</button>
     </div>
   </div>
+</template>
+
+<template name="withdraw">
+  <h2>Withdraw</h2>
+  <p>This page is ment only for the owner of this contract in order to simplify withdrawls. Do not invoke a withdrawl unless you are the owner, the transaction will have no effect otherwise.</p>
+  <p style="display: flex; justify-content: space-around; align-items: center;">How much do you wish to withdraw (less than 90% of total contract balance)? <input type="number" step="0.0001" placeholder="0.5 ETH" id="ethWithdrawAmount"></p>
+  <button class="previewbut">Withdraw</button>
 </template>
