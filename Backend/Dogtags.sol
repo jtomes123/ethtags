@@ -40,18 +40,20 @@ contract Dogtags {
     function IsOwner(address adr) public constant returns(bool) {
         return (adr == owner);
     }
-    
+    function GetContractBalance() public constant returns(uint) {
+        return this.balance;
+    }
     
     //Setters
-    function SetDogtag(string name, string content) public {
+    function SetDogtag(string name, string content) public payable {
         dogtags[msg.sender].name = name;
         dogtags[msg.sender].content = content;
         dogtags[msg.sender].verified = false;
     }
-    function SetDogtagContent(string content) public {
+    function SetDogtagContent(string content) public payable {
         dogtags[msg.sender].content = content;
     }
-    function SetDogtagName(string name) public {
+    function SetDogtagName(string name) public payable {
         dogtags[msg.sender].name = name;
         dogtags[msg.sender].verified = false;
     }
@@ -93,5 +95,15 @@ contract Dogtags {
         } else {
             revert();
         }
+    }
+    function Withdraw(uint amount) public {
+        if (msg.sender == owner) {
+            if (this.balance - amount > this.balance / 10) {
+                owner.transfer(amount);
+            }
+        }
+    }
+    function Donate() payable {
+
     }
 }
