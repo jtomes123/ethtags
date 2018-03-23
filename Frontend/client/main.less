@@ -45,7 +45,11 @@ input[type="submit"] {
     margin: auto;
     margin-left: 25%;
 }
-.infoforuser p, .verificationInfo {
+.dogtagPreview {
+    width: 80%;
+    margin: 2rem auto;
+}
+.infoforuser p, .verificationInfo, .dogtagPreview {
     background: #f5f4f2;
     padding: 0.5rem;
     border-radius: 10pt;
@@ -93,11 +97,16 @@ input[type="submit"] {
     justify-content: space-around;
     align-items: center;
 }
+.homeSearch {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 80vh;
+    margin: auto;
+}
 #ethDonateAmount {
     
-}
-.buttonContainer input[type="color"] {
-    width: 33%;
 }
 .buttonContainer input[type="checkbox"] {
     min-height: 5vh;
@@ -174,6 +183,10 @@ body {
     width: 80%;
     margin: auto;
     margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .info {
     padding-left: 0.5rem;
@@ -205,6 +218,7 @@ canvas {
     padding: .5vh 1vh;
     min-width: 5vh;
     min-height: 5vh;
+    width: 100%;
 }
 .poweredby {
     text-align: center;
@@ -257,4 +271,14 @@ border-bottom: none;
 .menu ul li button:focus {
 transform: none;
 border-bottom: none;
+}
+.style {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+.style div {
+    width: 30%;
+    margin: 1rem;
 }
