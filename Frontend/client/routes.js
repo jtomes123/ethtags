@@ -1,3 +1,8 @@
+FlowRouter.route('/preview/:_id', {
+  action() {
+    BlazeLayout.render('App_Body', {main: 'preview', address: FlowRouter.getParam('_id')});
+  }
+});
 FlowRouter.route('/iframe/:_id', {
     name: 'iframe',
     action() {
@@ -26,6 +31,12 @@ FlowRouter.route('/iframe/:_id', {
     }
   });
   FlowRouter.route('/', {
+    name: 'home',
+    action() {
+      BlazeLayout.render('App_Body', {main: 'home'});
+    }
+  });
+  FlowRouter.route('/dogtag', {
     name: 'main',
     action() {
       BlazeLayout.render('App_Body', {main: 'main'});

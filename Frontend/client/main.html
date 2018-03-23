@@ -37,13 +37,13 @@
     </form>
     <div class="buttonContainer">
       <form class="style">
-        <h3>Your Dogtag</h3>
-        <h4>Background color</h4>
-        <input id="bgc" class="colorsel" type="color" name="bgc" value="#FFFFFF">
-        <h4>Text color</h4>
-        <input id="textc" class="colorsel" type="color" name="textc" value="#000000">
-        <h4>Show address qrcode</h4>
-        <input id="showqr" type="checkbox" checked name="showqr">
+        <h3 style="width: 100%; text-align:center;">Your Dogtag</h3>
+        <div><h4>Background color</h4>
+        <input id="bgc" class="colorsel" type="color" name="bgc" value="#FFFFFF"></div>
+        <div><h4>Text color</h4>
+        <input id="textc" class="colorsel" type="color" name="textc" value="#000000"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 50%"><h4>Show address qrcode</h4>
+        <input id="showqr" type="checkbox" checked name="showqr"></div>
         <br>
       </form>
       <button class="previewbut" onclick="{var w = window.open('{{link}}', '_blank'); w.focus(); event.preventDefault();}">Preview</button>
@@ -120,7 +120,7 @@
   <div class="menu">
     <img src="/icon.svg" class="logo">
     <ul>
-      <li><button class="but_home">Home</button></li>
+      <li><button class="but_home">My Dogtag</button></li>
       <li><button class="but_about">About</button></li>
       <li><button class="but_faq">FAQ</button></li>
     </ul>
@@ -166,7 +166,9 @@
       <p id="popupAdr">Address: xxx</p>
       <p id="popupName">Name: xxx</p>
       <p id="popupCon">Bio: xxx</p>
-      <p style="display: flex; justify-content: space-around; align-items: center;">Do you want to donate to the contract? <input type="number" step="0.0001" placeholder="0.5 ETH" id="ethDonateAmount"></p>
+      <p style="display: flex; justify-content: space-around; align-items: center;">
+        Do you want to donate to the contract?
+        <input type="number" step="0.0001" placeholder="0.5 ETH" id="ethDonateAmount"></p>
       <button class="previewbut" id="confirm">Confirm</button><button class="previewbut" id="cancel">Cancel</button>
     </div>
   </div>
@@ -174,7 +176,29 @@
 
 <template name="withdraw">
   <h2>Withdraw</h2>
-  <p>This page is ment only for the owner of this contract in order to simplify withdrawls. Do not invoke a withdrawl unless you are the owner, the transaction will have no effect otherwise.</p>
-  <p style="display: flex; justify-content: space-around; align-items: center;">How much do you wish to withdraw (less than 90% of total contract balance)? <input type="number" step="0.0001" placeholder="0.5 ETH" id="ethWithdrawAmount"></p>
+  <p>This page is ment only for the owner of this contract in order to simplify withdrawls. Do not invoke a
+     withdrawl unless you are the owner, the transaction will have no effect otherwise.</p>
+  <p style="display: flex; justify-content: space-around; align-items: center;">How much do you wish to withdraw 
+    (less than 90% of total contract balance)? 
+    <input type="number" step="0.0001" placeholder="0.5 ETH" id="ethWithdrawAmount"></p>
   <button class="previewbut">Withdraw</button>
+</template>
+
+<template name="home">
+    {{>title}}
+    <div class="homeSearch">
+      <p>Enter ethereum address</p>
+      <input type="text" id="searchAddress" style="width: 100%;">
+      <button class="previewbut" id="search">Search</button>
+    </div>
+</template>
+<template name="preview">
+  {{>title}}
+  <div class="dogtagPreview">
+    <p style="font-size: 1.5rem" id="name">{{name}}</p>
+    <p id="verified"><b>Verified</b></p>
+    <p style="font-size: 0.8rem" id="address">{{address}}</p>
+    <p id="info">{{info}}</p>
+  </div>
+  <button class="previewbut" id="back">Back</button>
 </template>
