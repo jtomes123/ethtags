@@ -38,9 +38,9 @@
     <div class="buttonContainer">
       <form class="style">
         <h3 style="width: 100%; text-align:center;">Your Dogtag</h3>
-        <div><h4>Background color</h4>
+        <div style="display: flex; flex-direction: column; align-items: baseline;"><h4>Background color</h4>
         <input id="bgc" class="colorsel" type="color" name="bgc" value="#FFFFFF"></div>
-        <div><h4>Text color</h4>
+        <div style="display: flex; flex-direction: column; align-items: baseline;"><h4>Text color</h4>
         <input id="textc" class="colorsel" type="color" name="textc" value="#000000"></div>
         <div style="display: flex; justify-content: space-between; align-items: center; width: 50%"><h4>Show address qrcode</h4>
         <input id="showqr" type="checkbox" checked name="showqr"></div>
@@ -96,7 +96,16 @@
 
 <template name="faq">
   {{> title}}
-  <p>Still under construction.</p>
+  <div class="faq">
+    {{> faqitem title="Is the faq complete?" content="No not yet. Feel free to suggest more questons."}}
+  </div>
+</template>
+
+<template name="faqitem">
+  <div class="faq-item">
+    <span class="title">{{title}}</span>
+    <p class="content">{{content}}</p>
+  </div>
 </template>
 
 <template name="iframe">
@@ -120,9 +129,10 @@
   <div class="menu">
     <img src="/icon.svg" class="logo">
     <ul>
-      <li><button class="but_home">My Dogtag</button></li>
-      <li><button class="but_about">About</button></li>
-      <li><button class="but_faq">FAQ</button></li>
+      <li><button id="but_home">My Dogtag</button></li>
+      <li><button id="but_about">About</button></li>
+      <li><button id="but_faq">FAQ</button></li>
+      <li><button id="but_ver">Verification</button></li>
     </ul>
   </div>
   <header>
@@ -132,10 +142,8 @@
 
 <template name="verification">
   {{>title}}
-  <div class="edit">
-    <form class="new-post">
-      <input id="address" type="text" placeholder="Address">
-    </form>
+  <div class="versearch">
+    <input id="address" type="text" placeholder="Address" style="width:100%;">
     <button class="previewbut" id="continueBut">Continue</button>
   </div>
 </template>
@@ -155,7 +163,8 @@
   {{>title}}
   <div class="verificationInfo">
     Your address does not seem to possess the ability to verify others, please contact the developers. 
-    Sending a transaction with a verification from this address will have no result.
+    Sending a transaction with a verification from this address will have no result.<br>
+    Check out the faq section to find out more about verification and how to get verified or become a verifier.
   </div>
 </template>
 
@@ -175,30 +184,35 @@
 </template>
 
 <template name="withdraw">
-  <h2>Withdraw</h2>
-  <p>This page is ment only for the owner of this contract in order to simplify withdrawls. Do not invoke a
-     withdrawl unless you are the owner, the transaction will have no effect otherwise.</p>
-  <p style="display: flex; justify-content: space-around; align-items: center;">How much do you wish to withdraw 
-    (less than 90% of total contract balance)? 
-    <input type="number" step="0.0001" placeholder="0.5 ETH" id="ethWithdrawAmount"></p>
-  <button class="previewbut">Withdraw</button>
+  <div class="flex-centered">
+    <h2>Withdraw</h2>
+    <p>This page is ment only for the owner of this contract in order to simplify withdrawls. Do not invoke a
+      withdrawl unless you are the owner, the transaction will have no effect otherwise.</p>
+    <p style="display: flex; justify-content: space-around; align-items: center;">How much do you wish to withdraw 
+      (less than 90% of total contract balance)? 
+      <input type="number" step="0.0001" placeholder="0.5 ETH" id="ethWithdrawAmount"></p>
+    <button class="previewbut">Withdraw</button>
+  </div>
 </template>
 
 <template name="home">
     {{>title}}
     <div class="homeSearch">
-      <p>Enter ethereum address</p>
+      <img src="/icon.svg" class="icon">
+      <span style="font-size: 1.25rem;">Enter ethereum address:</span>
       <input type="text" id="searchAddress" style="width: 100%;">
       <button class="previewbut" id="search">Search</button>
     </div>
 </template>
 <template name="preview">
   {{>title}}
-  <div class="dogtagPreview">
-    <p style="font-size: 1.5rem" id="name">{{name}}</p>
-    <p id="verified"><b>Verified</b></p>
-    <p style="font-size: 0.8rem" id="address">{{address}}</p>
-    <p id="info">{{info}}</p>
+  <div class="flex-centered">
+    <div class="dogtagPreview">
+      <p style="font-size: 1.5rem" id="name">{{name}}</p>
+      <p id="verified"><b>Verified</b></p>
+      <p style="font-size: 0.8rem" id="address">{{address}}</p>
+      <p id="info">{{info}}</p>
+    </div>
+    <button class="previewbut" id="back">Back</button>
   </div>
-  <button class="previewbut" id="back">Back</button>
 </template>
