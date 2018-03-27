@@ -5,13 +5,16 @@ Template.title.events({
     'click .logo' (event, instance) {
       FlowRouter.go('home');
     },
-    'click .but_home'(event, instance) {
+    'click #but_home'(event, instance) {
       FlowRouter.go('main');
     },
-    'click .but_about'(event, instance) {
+    'click #but_about'(event, instance) {
       FlowRouter.go('about');
     },
-    'click .but_faq'(event, instance) {
+    'click #but_faq'(event, instance) {
       FlowRouter.go('faq');
+    },
+    'click #but_ver'(event, instance) {
+      FlowRouter.go('verification');
     },
   });
