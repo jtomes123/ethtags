@@ -100,3 +100,18 @@ Template.confirmDogtagPopup.events({
   }
 });
 
+Template.faqitem.events({
+  'click'(event, instance) {
+      event.preventDefault();
+      var x = instance.$(".content");
+      x.toggle();
+  },
+});
+Template.faqitem.helpers({
+  title() {
+    return this.title;
+  },
+  content() {
+    return this.content;
+  },
+});
