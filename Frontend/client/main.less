@@ -10,7 +10,7 @@ textarea {
     border: none;
     margin: 1vw 1vh;
     padding: 0.5rem;
-    margin-left: -0.25rem;
+    //margin-left: -0.25rem;
     background: #f5f4f2;
 }
 input {
@@ -20,7 +20,7 @@ input {
     margin: 1vw 1vh;
     border: none;
     padding: 0.5rem;
-    margin-left: -0.25rem;
+    //margin-left: -0.25rem;
 }
 input[type="text"], textarea {
     color: #4a90e2;
@@ -42,8 +42,6 @@ input[type="submit"]:hover, .previewbut:hover {
 }
 input[type="submit"] {
     width: 50%;
-    margin: auto;
-    margin-left: 25%;
 }
 .dogtagPreview {
     width: 80%;
@@ -66,9 +64,9 @@ input[type="submit"] {
     border-radius: 10pt;
     font-size: 1em;
     font-weight: 300;
-    width: calc(50%-1rem);
+    width: 50%;
     margin: auto;
-    margin-left: 25%;
+    //margin-left: 25%;
     margin-top: 0.5rem;
 }
 .popup {
@@ -97,13 +95,11 @@ input[type="submit"] {
     justify-content: space-around;
     align-items: center;
 }
-.homeSearch {
+.homeSearch, .versearch, .flex-centered, .popupContent {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 80vh;
-    margin: auto;
 }
 #ethDonateAmount {
     
@@ -162,8 +158,14 @@ body {
     background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #eef2f3, #8e9eab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-.new-post * {
-    width: 100%;
+.new-post{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    * {
+        width: 100%;
+    }
 }
 .copybut {
     background: rgb(27, 79, 138);
@@ -242,17 +244,21 @@ background: linear-gradient(to right, #232526 7.5%, #414345); /* W3C, IE 10+/ Ed
         
 }
 .menu ul {
-    display: inline-table;
-    padding: 0 25%;
+    display: flex;
+    padding-left: 5vh;
     height: 5vh;
     margin: auto;
     width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    list-style-type: none;
 }
 .menu ul li {
-    display: table-cell;
+    //display: table-cell;
     margin: auto;
-    width: 33.33%;
     height: 5vh;
+    flex-grow: 1;
 }
 .menu ul li button {
     background: transparent;
@@ -281,4 +287,23 @@ border-bottom: none;
 .style div {
     width: 30%;
     margin: 1rem;
+}
+.style h4 {
+    text-align: center;
+}
+
+.icon {
+    max-height: 33vh;
+    width: auto;
+}
+
+.faq-item {
+    border-radius: 10pt;
+    background: white;
+    padding: 0.5rem;
+    font-size: 1.5rem;
+    .content {
+        font-size: 1rem;
+        display: none;
+    }
 }
