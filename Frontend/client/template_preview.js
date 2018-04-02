@@ -23,7 +23,10 @@ Template.preview.onCreated(function verconOnCreated() {
         if(!error)
           na.set(result);
         else
+        {
             console.error(error);
+            FlowRouter.go("/error/101");
+        }
       });
       
       Dogtags.GetDogtagContent(FlowRouter.getParam("_id"), function (error, result){
@@ -32,7 +35,10 @@ Template.preview.onCreated(function verconOnCreated() {
           ca.set(result);
         }
         else
+        {
             console.error(error);
+            FlowRouter.go("/error/101");
+        }
       });
   
       Dogtags.IsVerified(FlowRouter.getParam("_id"), function(error, result){
@@ -45,7 +51,10 @@ Template.preview.onCreated(function verconOnCreated() {
           }
         }
         else
+        {
             console.error(error);
+            FlowRouter.go("/error/101");
+        }
       });
     } ,750);
   });

@@ -293,3 +293,8 @@ function getContract() {
     ]);
     return DogtagsContract.at('0x0305c3463f4efd55466a4b09df63a3483da5fd00'); //Old address: 0x564b3d0a2453a93790c9726031b2a848cf7a2e6b, 0x0691b26ee7c91a1518b3e6b7adbefb31b402d951
   }
+  //Makes chaniging the logic easier
+  function checkAddress(address)
+  {
+    return web3.isAddress(address);
+  }

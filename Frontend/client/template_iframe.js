@@ -71,8 +71,11 @@ Template.iframe.helpers({
       Dogtags.GetDogtagName(FlowRouter.getParam("_id"), function (error, result){
         if(!error)
           na.set(result);
-        else
-            console.error(error);
+          else
+          {
+              console.error(error);
+              FlowRouter.go("/error/101");
+          }
       });
       
       Dogtags.GetDogtagContent(FlowRouter.getParam("_id"), function (error, result){
@@ -81,7 +84,10 @@ Template.iframe.helpers({
           ca.set(result);
         }
         else
+        {
             console.error(error);
+            FlowRouter.go("/error/101");
+        }
       });
   
       Dogtags.IsVerified(FlowRouter.getParam("_id"), function(error, result){
@@ -94,7 +100,10 @@ Template.iframe.helpers({
           }
         }
         else
+        {
             console.error(error);
+            FlowRouter.go("/error/101");
+        }
       });
     } ,750);
   });

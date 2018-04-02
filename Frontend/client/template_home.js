@@ -3,6 +3,13 @@
 //--------------------------------------------------------
 Template.home.events({
     'click #search'(event, instance) {
-      FlowRouter.go("/preview/" + $("#searchAddress").val());
+      if(checkAddress($("#searchAddress").val()))
+      {
+        FlowRouter.go("/preview/" + $("#searchAddress").val());
+      }
+      else
+      {
+        FlowRouter.go("/error/100");
+      }
   },
   });

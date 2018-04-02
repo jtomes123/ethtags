@@ -35,8 +35,11 @@ Template.main.onCreated(function mainOnCreated() {
     Dogtags.GetDogtagName(web3.eth.accounts[0], function (error, result){
       if(!error)
         na.set(result);
-      else
-          console.error(error);
+        else
+        {
+            console.error(error);
+            FlowRouter.go("/error/101");
+        }
     });
     
     Dogtags.GetDogtagContent(web3.eth.accounts[0], function (error, result){
@@ -45,12 +48,15 @@ Template.main.onCreated(function mainOnCreated() {
         ca.set(result);
       }
       else
+      {
           console.error(error);
+          FlowRouter.go("/error/101");
+      }
     });
   } ,750);
   Meteor.setTimeout(function() {
     lnk.set("http://ethtags.herokuapp.com" + "/iframe/" + adr.get() + "/true/ffffff/000000");
-  }, 1000);
+  }, 750);
 });
 Template.main.helpers({
   name() {
@@ -113,5 +119,18 @@ Template.faqitem.helpers({
   },
   content() {
     return this.content;
+  },
+});
+
+Template.error.helpers({
+  error() {
+    switch (FlowRouter.getParam("_code")) {
+      case "100":
+        return "100: address entered is invalid.";
+      case "101":
+        return "101: there has been an error while contacting the network."
+      default:
+        return "null";
+    }
   },
 });
