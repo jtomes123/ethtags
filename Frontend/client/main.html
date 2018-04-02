@@ -125,6 +125,17 @@
   <aside class="poweredby">Powered by <a href="http://heroku.ethtags.com">Ethtags</a>.</aside>
 </template>
 
+<!--
+100 invalid address
+101 unable to reach ethereum network
+-->
+<template name="error">
+  <div class="error-message">
+    <h4>Error</h4>
+    There has been an error with the following error message:<br>{{error}}
+  </div>
+</template>
+
 <template name="title">
   <div class="menu">
     <img src="/icon.svg" class="logo">
