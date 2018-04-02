@@ -160,14 +160,16 @@
 </template>
 
 <template name="verificationConfirm">
-    {{>title}}
-  <div class="verificationInfo"> 
-    <h4>Dogtag</h4>
-    <p>Name: {{signature}}</p>
-    <p>Address: {{address}}</p>
-    <p>Bio:<br>{{content}}</p>
+  {{>title}}
+  <div class="flex-centered">
+    <div class="verificationInfo"> 
+      <h4>Dogtag</h4>
+      <p>Name: {{signature}}</p>
+      <p>Address: {{address}}</p>
+      <p>Bio:<br>{{content}}</p>
+    </div>
+    <button class="previewbut" id="verifyBut">Verify</button>
   </div>
-  <button class="previewbut" id="verifyBut">Verify</button>
 </template>
 
 <template name="verificationNotAVerifier">
