@@ -1,0 +1,399 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <canvas id="code" width="150" height="150"></canvas>
+        <div class="info">
+            <p><b id="adr">Address</b></p>
+            <p id="con">Content</p>
+            <p><footer>
+                <svg class="checkmark" id="ver" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="isolation:isolate" viewBox="0 0 32 32" width="32" height="32">
+                <defs><clipPath id="_clipPath_S1QGaXOCBixV7oVcSC9d9vzvpIWyZr2K"><rect width="32" height="32"/></clipPath></defs>
+                    <g clip-path="url(#_clipPath_S1QGaXOCBixV7oVcSC9d9vzvpIWyZr2K)">
+                    <path id="verp" d=" M 5.118 16 C 5.118 9.994 9.994 5.118 16 5.118 C 22.006 5.118 26.882 9.994 26.882 16 C 26.882 22.006 22.006 26.882 16 26.882 C 9.994 26.882 5.118 22.006 5.118 16 Z  M 9.8 16.4 L 9.2 15.6 L 10.8 14.4 L 11.4 15.2 L 14.7 19.6 L 15.1 19.8 L 15.5 19.5 L 20.6 10.6 L 21 9.7 L 22.8 10.7 L 22.3 11.6 L 17 20.9 L 15.2 22.1 L 13.4 21.1 L 9.8 16.4 Z " fill-rule="evenodd" fill="rgb(255,255,255)"/></g>
+                </svg>
+                <span id="sig">Signature</span>
+            </footer></p>
+        </div>
+        <aside class="poweredby">Powered by <a href="http://heroku.ethtags.com">Ethtags</a>.</aside>
+        <style>
+            .info {
+                padding-left: 0.5rem;
+                display: flex;
+                flex-direction: column;  
+            }
+            .info p {
+                flex: 1;
+            }
+            .info footer {
+                text-align: right;
+                font-style: italic;
+                line-height: 1rem;
+                font-size: 1rem;
+            }
+            .info footer .checkmark {
+                height: 1rem;
+                width: 1rem;
+                align-content: center;
+                margin-right: 0.5rem;
+                fill: #4a90e2;
+            }
+            .poweredby {
+                text-align: center;
+                font-size: 0.75rem;
+            }
+            canvas {
+                float: left;
+            }
+        </style>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ethjs@0.3.4/dist/ethjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+        <script>
+            var eth = null;
+            var contract = null;
+            if (typeof window.web3 !== 'undefined' && typeof window.web3.currentProvider !== 'undefined') {
+                eth = new Eth(window.web3.currentProvider);
+            } else {
+                console.log('Metamask not found!')
+            }
+
+            if(eth !== null) {
+                const tokenABI = [
+                    {
+                        "constant": true,
+                        "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                        ],
+                        "name": "GetDogtagContent",
+                        "outputs": [
+                        {
+                            "name": "",
+                            "type": "string"
+                        }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        },
+                        {
+                            "name": "status",
+                            "type": "bool"
+                        }
+                        ],
+                        "name": "SetAdminStatus",
+                        "outputs": [],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                        ],
+                        "name": "IsVerifier",
+                        "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                        ],
+                        "name": "GetDogtagName",
+                        "outputs": [
+                        {
+                            "name": "",
+                            "type": "string"
+                        }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                        {
+                            "name": "content",
+                            "type": "string"
+                        }
+                        ],
+                        "name": "SetDogtagContent",
+                        "outputs": [],
+                        "payable": true,
+                        "stateMutability": "payable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                        {
+                            "name": "amount",
+                            "type": "uint256"
+                        }
+                        ],
+                        "name": "Withdraw",
+                        "outputs": [],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                        ],
+                        "name": "IsVerified",
+                        "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        }
+                        ],
+                        "name": "SetDogtagName",
+                        "outputs": [],
+                        "payable": true,
+                        "stateMutability": "payable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                        ],
+                        "name": "IsAdmin",
+                        "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        },
+                        {
+                            "name": "status",
+                            "type": "bool"
+                        }
+                        ],
+                        "name": "SetVerificationStatus",
+                        "outputs": [],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        },
+                        {
+                            "name": "content",
+                            "type": "string"
+                        }
+                        ],
+                        "name": "SetDogtag",
+                        "outputs": [],
+                        "payable": true,
+                        "stateMutability": "payable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                        ],
+                        "name": "SetNewOwner",
+                        "outputs": [],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [],
+                        "name": "Donate",
+                        "outputs": [],
+                        "payable": true,
+                        "stateMutability": "payable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                        ],
+                        "name": "IsOwner",
+                        "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "constant": false,
+                        "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        },
+                        {
+                            "name": "status",
+                            "type": "bool"
+                        }
+                        ],
+                        "name": "SetVerifierStatus",
+                        "outputs": [],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "GetContractBalance",
+                        "outputs": [
+                        {
+                            "name": "",
+                            "type": "uint256"
+                        }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                        ],
+                        "name": "GetVerifier",
+                        "outputs": [
+                        {
+                            "name": "",
+                            "type": "address"
+                        }
+                        ],
+                        "payable": false,
+                        "stateMutability": "view",
+                        "type": "function"
+                    },
+                    {
+                        "inputs": [],
+                        "payable": false,
+                        "stateMutability": "nonpayable",
+                        "type": "constructor"
+                    }
+                ]
+                contract = eth.contract(tokenABI).at('0x0305c3463f4efd55466a4b09df63a3483da5fd00')
+            }
+
+            window.onload = async () => {
+                const url = new URL(document.location.href)
+                const address = url.searchParams.get('adr')
+                const backgroundColor = url.searchParams.get('bgc')
+                const textColor = url.searchParams.get('txc')
+                const hideQR = url.searchParams.get('hqr')
+
+                console.log(address, backgroundColor, textColor, hideQR)
+
+                var qr = new QRious({
+                    element: document.getElementById('code'),
+                    value: address,
+                    backgroundAlpha: 0
+                });
+                
+                document.getElementById('adr').innerText = address
+                document.getElementById('verp').style.fill = '#' + textColor
+                document.body.style.backgroundColor = '#' + backgroundColor
+                document.body.style.color = '#' + textColor
+
+                if(hideQR == "true")
+                {
+                    document.getElementById('code').style.display = 'none'
+                    console.log('hiding')
+                }
+                
+                try {
+                    const name = await contract.GetDogtagName(address)
+                    const bio = await contract.GetDogtagContent(address)
+                    const isVerified = await contract.IsVerified(address)
+
+                    document.getElementById('con').innerText = bio[0]
+                    document.getElementById('sig').innerHTML = name[0]
+
+                    if(!isVerified)
+                        document.getElementById('ver').hidden = true
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        </script>
+    </body>
+</html>
