@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="theme-color" content="#ffffff">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -260,35 +266,25 @@
         if(eth !== null) {
             const tokenABI = [
                 {
-                    "constant": true,
-                    "inputs": [
-                    {
-                        "name": "adr",
-                        "type": "address"
-                    }
-                    ],
-                    "name": "GetDogtagContent",
-                    "outputs": [
-                    {
-                        "name": "",
-                        "type": "string"
-                    }
-                    ],
-                    "payable": false,
-                    "stateMutability": "view",
+                    "constant": false,
+                    "inputs": [],
+                    "name": "Donate",
+                    "outputs": [],
+                    "payable": true,
+                    "stateMutability": "payable",
                     "type": "function"
                 },
                 {
                     "constant": false,
                     "inputs": [
-                    {
-                        "name": "adr",
-                        "type": "address"
-                    },
-                    {
-                        "name": "status",
-                        "type": "bool"
-                    }
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        },
+                        {
+                            "name": "status",
+                            "type": "bool"
+                        }
                     ],
                     "name": "SetAdminStatus",
                     "outputs": [],
@@ -297,136 +293,14 @@
                     "type": "function"
                 },
                 {
-                    "constant": true,
-                    "inputs": [
-                    {
-                        "name": "adr",
-                        "type": "address"
-                    }
-                    ],
-                    "name": "IsVerifier",
-                    "outputs": [
-                    {
-                        "name": "",
-                        "type": "bool"
-                    }
-                    ],
-                    "payable": false,
-                    "stateMutability": "view",
-                    "type": "function"
-                },
-                {
-                    "constant": true,
-                    "inputs": [
-                    {
-                        "name": "adr",
-                        "type": "address"
-                    }
-                    ],
-                    "name": "GetDogtagName",
-                    "outputs": [
-                    {
-                        "name": "",
-                        "type": "string"
-                    }
-                    ],
-                    "payable": false,
-                    "stateMutability": "view",
-                    "type": "function"
-                },
-                {
                     "constant": false,
                     "inputs": [
-                    {
-                        "name": "content",
-                        "type": "string"
-                    }
+                        {
+                            "name": "newContract",
+                            "type": "address"
+                        }
                     ],
-                    "name": "SetDogtagContent",
-                    "outputs": [],
-                    "payable": true,
-                    "stateMutability": "payable",
-                    "type": "function"
-                },
-                {
-                    "constant": false,
-                    "inputs": [
-                    {
-                        "name": "amount",
-                        "type": "uint256"
-                    }
-                    ],
-                    "name": "Withdraw",
-                    "outputs": [],
-                    "payable": false,
-                    "stateMutability": "nonpayable",
-                    "type": "function"
-                },
-                {
-                    "constant": true,
-                    "inputs": [
-                    {
-                        "name": "adr",
-                        "type": "address"
-                    }
-                    ],
-                    "name": "IsVerified",
-                    "outputs": [
-                    {
-                        "name": "",
-                        "type": "bool"
-                    }
-                    ],
-                    "payable": false,
-                    "stateMutability": "view",
-                    "type": "function"
-                },
-                {
-                    "constant": false,
-                    "inputs": [
-                    {
-                        "name": "name",
-                        "type": "string"
-                    }
-                    ],
-                    "name": "SetDogtagName",
-                    "outputs": [],
-                    "payable": true,
-                    "stateMutability": "payable",
-                    "type": "function"
-                },
-                {
-                    "constant": true,
-                    "inputs": [
-                    {
-                        "name": "adr",
-                        "type": "address"
-                    }
-                    ],
-                    "name": "IsAdmin",
-                    "outputs": [
-                    {
-                        "name": "",
-                        "type": "bool"
-                    }
-                    ],
-                    "payable": false,
-                    "stateMutability": "view",
-                    "type": "function"
-                },
-                {
-                    "constant": false,
-                    "inputs": [
-                    {
-                        "name": "adr",
-                        "type": "address"
-                    },
-                    {
-                        "name": "status",
-                        "type": "bool"
-                    }
-                    ],
-                    "name": "SetVerificationStatus",
+                    "name": "setDataStorageContract",
                     "outputs": [],
                     "payable": false,
                     "stateMutability": "nonpayable",
@@ -435,14 +309,14 @@
                 {
                     "constant": false,
                     "inputs": [
-                    {
-                        "name": "name",
-                        "type": "string"
-                    },
-                    {
-                        "name": "content",
-                        "type": "string"
-                    }
+                        {
+                            "name": "name",
+                            "type": "string"
+                        },
+                        {
+                            "name": "content",
+                            "type": "string"
+                        }
                     ],
                     "name": "SetDogtag",
                     "outputs": [],
@@ -453,10 +327,38 @@
                 {
                     "constant": false,
                     "inputs": [
-                    {
-                        "name": "adr",
-                        "type": "address"
-                    }
+                        {
+                            "name": "content",
+                            "type": "string"
+                        }
+                    ],
+                    "name": "SetDogtagContent",
+                    "outputs": [],
+                    "payable": true,
+                    "stateMutability": "payable",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "name": "name",
+                            "type": "string"
+                        }
+                    ],
+                    "name": "SetDogtagName",
+                    "outputs": [],
+                    "payable": true,
+                    "stateMutability": "payable",
+                    "type": "function"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
                     ],
                     "name": "SetNewOwner",
                     "outputs": [],
@@ -466,45 +368,55 @@
                 },
                 {
                     "constant": false,
-                    "inputs": [],
-                    "name": "Donate",
-                    "outputs": [],
-                    "payable": true,
-                    "stateMutability": "payable",
-                    "type": "function"
-                },
-                {
-                    "constant": true,
                     "inputs": [
-                    {
-                        "name": "adr",
-                        "type": "address"
-                    }
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        },
+                        {
+                            "name": "status",
+                            "type": "bool"
+                        }
                     ],
-                    "name": "IsOwner",
-                    "outputs": [
-                    {
-                        "name": "",
-                        "type": "bool"
-                    }
-                    ],
+                    "name": "SetVerificationStatus",
+                    "outputs": [],
                     "payable": false,
-                    "stateMutability": "view",
+                    "stateMutability": "nonpayable",
                     "type": "function"
                 },
                 {
                     "constant": false,
                     "inputs": [
-                    {
-                        "name": "adr",
-                        "type": "address"
-                    },
-                    {
-                        "name": "status",
-                        "type": "bool"
-                    }
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        },
+                        {
+                            "name": "status",
+                            "type": "bool"
+                        }
                     ],
                     "name": "SetVerifierStatus",
+                    "outputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "payable": false,
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "constant": false,
+                    "inputs": [
+                        {
+                            "name": "amount",
+                            "type": "uint256"
+                        }
+                    ],
+                    "name": "Withdraw",
                     "outputs": [],
                     "payable": false,
                     "stateMutability": "nonpayable",
@@ -515,10 +427,10 @@
                     "inputs": [],
                     "name": "GetContractBalance",
                     "outputs": [
-                    {
-                        "name": "",
-                        "type": "uint256"
-                    }
+                        {
+                            "name": "",
+                            "type": "uint256"
+                        }
                     ],
                     "payable": false,
                     "stateMutability": "view",
@@ -527,30 +439,138 @@
                 {
                     "constant": true,
                     "inputs": [
-                    {
-                        "name": "adr",
-                        "type": "address"
-                    }
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
                     ],
-                    "name": "GetVerifier",
+                    "name": "GetDogtagContent",
                     "outputs": [
-                    {
-                        "name": "",
-                        "type": "address"
-                    }
+                        {
+                            "name": "",
+                            "type": "string"
+                        }
                     ],
                     "payable": false,
                     "stateMutability": "view",
                     "type": "function"
                 },
                 {
-                    "inputs": [],
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "GetDogtagName",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
                     "payable": false,
-                    "stateMutability": "nonpayable",
-                    "type": "constructor"
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "GetVerifier",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "IsAdmin",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "IsOwner",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "IsVerified",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "constant": true,
+                    "inputs": [
+                        {
+                            "name": "adr",
+                            "type": "address"
+                        }
+                    ],
+                    "name": "IsVerifier",
+                    "outputs": [
+                        {
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ],
+                    "payable": false,
+                    "stateMutability": "view",
+                    "type": "function"
                 }
             ]
-            contract = eth.contract(tokenABI).at('0x0305c3463f4efd55466a4b09df63a3483da5fd00')
+            contract = eth.contract(tokenABI).at('0x5e609906562de69e5ab2ef681f71dfbba43ce7fd')//Old contract 0x0305c3463f4efd55466a4b09df63a3483da5fd00
         }
 
         var vue = new Vue({
@@ -665,7 +685,7 @@
                 },
                 async updateMyDogtag() {
                     const addresses = await this.ethereum.accounts()
-
+                    console.log(addresses)
                     if(addresses[0]) {
                         const name = await this.ethtags.GetDogtagName(addresses[0])
                         const bio = await this.ethtags.GetDogtagContent(addresses[0])
