@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -16,6 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <title>Ethtags</title>
 </head>
+
 <body>
     <div id="app">
         <v-app>
@@ -42,59 +44,66 @@
             <v-footer app>
                 <v-btn outline small @click="openGit">GitHub</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn v-if="ethtags !== null" outline small @click="verification.active = true">Verification</v-btn>
+                <v-btn :v-if="ethtags !== null" outline small @click="verification.active = true">Verification</v-btn>
             </v-footer>
 
             <v-dialog v-model="aboutDialog" scrollable fullscreen hide-overlay transition="dialog-bottom-transition">
                 <v-card tile>
                     <v-toolbar dense>
-                        <v-btn flat icon @click="aboutDialog = false"><v-icon>close</v-icon></v-btn>
+                        <v-btn flat icon @click="aboutDialog = false">
+                            <v-icon>close</v-icon>
+                        </v-btn>
                         <v-toolbar-title>About</v-toolbar-title>
                     </v-toolbar>
                     <v-layout align-start justify-center direction="column">
                         <div class="flex-centered-80">
-                                <p>
-                                Ethtags is a project which lets you create your own <b>dogtag</b> which is attached to your address. 
-                                The dogtag is always attached to the address that invoked the contract, in other words your friends
-                                can not change your dogtag, if they do not have full access to your wallet.
-                                </p>
-                                <p>
-                                The dogtag itself is stored in the ethereum blockchain and the data can be accessed at any time as long as
-                                you have access to the ethereum blockchain. The ethtags frontend provides a simple way to access your dogtag.
-                                You can get a link to it which you can then send to anyone to check out your dogtag or you can embed it as an 
-                                signature anywhere where they support iframe html tag.
-                                </p>
-                                <p>
-                                There are future plans to allow you, to get the information, specifically the name, in your dogtag verified by a 
-                                trusted third party, like the post office or some other third party which would be present almost anywhere. These 
-                                verified dogtags would be very handy when you need to send a larger amount of currency to a someone else and you 
-                                want to be sure that it is them.
-                                </p>
-                                <p>
+                            <p>
+                                Ethtags is a project which lets you create your own
+                                <b>dogtag</b> which is attached to your address. The dogtag is always attached to the address
+                                that invoked the contract, in other words your friends can not change your dogtag, if they
+                                do not have full access to your wallet.
+                            </p>
+                            <p>
+                                The dogtag itself is stored in the ethereum blockchain and the data can be accessed at any time as long as you have access
+                                to the ethereum blockchain. The ethtags frontend provides a simple way to access your dogtag.
+                                You can get a link to it which you can then send to anyone to check out your dogtag or you
+                                can embed it as an signature anywhere where they support iframe html tag.
+                            </p>
+                            <p>
+                                There are future plans to allow you, to get the information, specifically the name, in your dogtag verified by a trusted
+                                third party, like the post office or some other third party which would be present almost
+                                anywhere. These verified dogtags would be very handy when you need to send a larger amount
+                                of currency to a someone else and you want to be sure that it is them.
+                            </p>
+                            <p>
                                 Ethtags is currently maintained and developed by Jakub Tomeš a casual programmer and game developer that wanted to start
                                 developing smart contracts.
-                                </p>
+                            </p>
                         </div>
                     </v-layout>
                 </v-card>
             </v-dialog>
-            
+
             <v-dialog v-model="faqDialog" scrollable fullscreen hide-overlay transition="dialog-bottom-transition">
                 <v-card tile>
                     <v-toolbar dense>
-                        <v-btn flat icon @click="faqDialog = false"><v-icon>close</v-icon></v-btn>
+                        <v-btn flat icon @click="faqDialog = false">
+                            <v-icon>close</v-icon>
+                        </v-btn>
                         <v-toolbar-title>FAQ</v-toolbar-title>
                     </v-toolbar>
                     <v-layout align-start justify-center direction="column">
                         <div class="flex-centered-80">
-                            <v-card width="100%">
-                              <v-card-title class="accent white--text">
-                                Is this FAQ complete?
-                              </v-card-title>
-                              <v-card-text>
-                                  No, not at all.
-                              </v-card-text>
-                            </v-card>
+                            <template v-for="(item, index) in faqData">
+                                <v-card v-bind:key="index" width="100%" class="margin-1rem">
+                                    <v-card-title class="accent white--text">
+                                        {{ item.question }}
+                                    </v-card-title>
+                                    <v-card-text>
+                                        {{ item.answer }}
+                                    </v-card-text>
+                                </v-card>
+                            </template>
                         </div>
                     </v-layout>
                 </v-card>
@@ -103,7 +112,9 @@
             <v-dialog v-model="myDogtagDialog" scrollable fullscreen hide-overlay transition="dialog-bottom-transition">
                 <v-card tile>
                     <v-toolbar dense>
-                        <v-btn flat icon @click="myDogtagDialog = false"><v-icon>close</v-icon></v-btn>
+                        <v-btn flat icon @click="myDogtagDialog = false">
+                            <v-icon>close</v-icon>
+                        </v-btn>
                         <v-toolbar-title>My Dogtag</v-toolbar-title>
                     </v-toolbar>
                     <v-card-text>
@@ -118,13 +129,16 @@
                                 <v-divider></v-divider>
                                 <h2>Dogtag Style</h2>
                                 <div class="flex-inline-50">
-                                    <h3>Background Color</h3><swatches v-model="myDogtag.bgColor"/>
+                                    <h3>Background Color</h3>
+                                    <swatches v-model="myDogtag.bgColor" />
                                 </div>
                                 <div class="flex-inline-50">
-                                    <h3>Text Color</h3><swatches v-model="myDogtag.textColor"/>
+                                    <h3>Text Color</h3>
+                                    <swatches v-model="myDogtag.textColor" />
                                 </div>
                                 <div class="flex-inline-50">
-                                    <h3>Display QRCode</h3><input type="checkbox" class="swatch-checkbox" v-model="myDogtag.displayQR">
+                                    <h3>Display QRCode</h3>
+                                    <input type="checkbox" class="swatch-checkbox" v-model="myDogtag.displayQR">
                                 </div>
                                 <v-divider></v-divider>
                                 <h3>Link</h3>
@@ -156,8 +170,7 @@
                             </v-card-text>
                             <v-card-actions>
                                 <div class="flex-inline">
-                                    <v-btn color="primary" :loading="myDogtag.isBeingUpdated" :disabled="myDogtag.isBeingUpdated" 
-                                    @click="sendDogtagToBlockchain">Confirm</v-btn>
+                                    <v-btn color="primary" :loading="myDogtag.isBeingUpdated" :disabled="myDogtag.isBeingUpdated" @click="sendDogtagToBlockchain">Confirm</v-btn>
                                     <v-btn @click="myDogtag.review = false">Cancel</v-btn>
                                 </div>
                             </v-card-actions>
@@ -193,62 +206,62 @@
                     </v-card-title>
                     <v-card-text>
                         <v-stepper v-model="verification.step">
-                          <v-stepper-header>
-                            <v-stepper-step step="1" :complete="verification.step > 1">Enter the address</v-stepper-step>
-                            <v-divider></v-divider>
-                            <v-stepper-step step="2" :complete="verification.step > 2">Confirm data</v-stepper-step>
-                            <v-divider></v-divider>
-                            <v-stepper-step step="3" :complete="verification.step > 3">Done</v-stepper-step>
-                          </v-stepper-header>
-                          <v-stepper-items>
-                            <v-stepper-content step="1">
-                                <v-container fluid fill-height>
-                                    <v-layout align-center justify-center>
-                                        <div class="flex-centered-80">
-                                            <v-text-field name="address-search-verification" label="Ethereum Address" id="testing" :rules="[isAddress]" v-model="verification.address"></v-text-field>
-                                        </div>
-                                    </v-layout>
-                                </v-container>
-                                <v-btn color="primary" @click.native="verificationFetchData" :disabled="!Eth.isAddress(verification.address)">Continue</v-btn>
-                                <v-btn flat @click="verificationClose">Cancel</v-btn>
-                            </v-stepper-content>
-                            <v-stepper-content step="2">
-                              <v-card class="mb-5" height="200px">
-                                <h3>Address</h3>
-                                <p>{{verification.address}}</p>
-                                <h3>Name</h3>
-                                <p>{{verification.name}}</p>
-                                <h3>Bio</h3>
-                                <p>{{verification.bio}}</p>
-                              </v-card>
-                              <v-btn color="primary" @click.native="verificationVerify" :loading="verification.inProcess" :disabled="verification.inProcess">Continue</v-btn>
-                              <v-btn flat @click="verificationClose">Cancel</v-btn>
-                            </v-stepper-content>
-                            <v-stepper-content step="3">
-                                <v-card class="mb-5" height="200px">
+                            <v-stepper-header>
+                                <v-stepper-step step="1" :complete="verification.step > 1">Enter the address</v-stepper-step>
+                                <v-divider></v-divider>
+                                <v-stepper-step step="2" :complete="verification.step > 2">Confirm data</v-stepper-step>
+                                <v-divider></v-divider>
+                                <v-stepper-step step="3" :complete="verification.step > 3">Done</v-stepper-step>
+                            </v-stepper-header>
+                            <v-stepper-items>
+                                <v-stepper-content step="1">
                                     <v-container fluid fill-height>
                                         <v-layout align-center justify-center>
                                             <div class="flex-centered-80">
-                                                <v-alert v-if="verification.result" type="success" :value="true">
-                                                    Address has been verified
-                                                </v-alert>
-                                                <v-alert v-else type="error" :value="true">
-                                                    There was an error during verification. Please try again later or contact the administrator.
-                                                </v-alert>
+                                                <v-text-field name="address-search-verification" label="Ethereum Address" id="testing" :rules="[isAddress]" v-model="verification.address"></v-text-field>
                                             </div>
                                         </v-layout>
                                     </v-container>
-                                </v-card>
-                                <v-btn color="primary" @click="verificationClose">Close</v-btn>
-                            </v-stepper-content>
-                          </v-stepper-items>
+                                    <v-btn color="primary" @click.native="verificationFetchData" :disabled="!Eth.isAddress(verification.address)">Continue</v-btn>
+                                    <v-btn flat @click="verificationClose">Cancel</v-btn>
+                                </v-stepper-content>
+                                <v-stepper-content step="2">
+                                    <v-card class="mb-5" height="200px">
+                                        <h3>Address</h3>
+                                        <p>{{verification.address}}</p>
+                                        <h3>Name</h3>
+                                        <p>{{verification.name}}</p>
+                                        <h3>Bio</h3>
+                                        <p>{{verification.bio}}</p>
+                                    </v-card>
+                                    <v-btn color="primary" @click.native="verificationVerify" :loading="verification.inProcess" :disabled="verification.inProcess">Continue</v-btn>
+                                    <v-btn flat @click="verificationClose">Cancel</v-btn>
+                                </v-stepper-content>
+                                <v-stepper-content step="3">
+                                    <v-card class="mb-5" height="200px">
+                                        <v-container fluid fill-height>
+                                            <v-layout align-center justify-center>
+                                                <div class="flex-centered-80">
+                                                    <v-alert v-if="verification.result" type="success" :value="true">
+                                                        Address has been verified
+                                                    </v-alert>
+                                                    <v-alert v-else type="error" :value="true">
+                                                        There was an error during verification. Please try again later or contact the administrator.
+                                                    </v-alert>
+                                                </div>
+                                            </v-layout>
+                                        </v-container>
+                                    </v-card>
+                                    <v-btn color="primary" @click="verificationClose">Close</v-btn>
+                                </v-stepper-content>
+                            </v-stepper-items>
                         </v-stepper>
                     </v-card-text>
                 </v-card>
             </v-dialog>
         </v-app>
     </div>
-    
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ethjs@0.3.4/dist/ethjs.min.js"></script>
     <script src="https://unpkg.com/vue-swatches"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -263,9 +276,8 @@
             console.log('Metamask not found!')
         }
 
-        if(eth !== null) {
-            const tokenABI = [
-                {
+        if (eth !== null) {
+            const tokenABI = [{
                     "constant": false,
                     "inputs": [],
                     "name": "Donate",
@@ -276,8 +288,7 @@
                 },
                 {
                     "constant": false,
-                    "inputs": [
-                        {
+                    "inputs": [{
                             "name": "adr",
                             "type": "address"
                         },
@@ -294,12 +305,10 @@
                 },
                 {
                     "constant": false,
-                    "inputs": [
-                        {
-                            "name": "newContract",
-                            "type": "address"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "newContract",
+                        "type": "address"
+                    }],
                     "name": "setDataStorageContract",
                     "outputs": [],
                     "payable": false,
@@ -308,8 +317,7 @@
                 },
                 {
                     "constant": false,
-                    "inputs": [
-                        {
+                    "inputs": [{
                             "name": "name",
                             "type": "string"
                         },
@@ -326,12 +334,10 @@
                 },
                 {
                     "constant": false,
-                    "inputs": [
-                        {
-                            "name": "content",
-                            "type": "string"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "content",
+                        "type": "string"
+                    }],
                     "name": "SetDogtagContent",
                     "outputs": [],
                     "payable": true,
@@ -340,12 +346,10 @@
                 },
                 {
                     "constant": false,
-                    "inputs": [
-                        {
-                            "name": "name",
-                            "type": "string"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "name",
+                        "type": "string"
+                    }],
                     "name": "SetDogtagName",
                     "outputs": [],
                     "payable": true,
@@ -354,12 +358,10 @@
                 },
                 {
                     "constant": false,
-                    "inputs": [
-                        {
-                            "name": "adr",
-                            "type": "address"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "adr",
+                        "type": "address"
+                    }],
                     "name": "SetNewOwner",
                     "outputs": [],
                     "payable": false,
@@ -368,8 +370,7 @@
                 },
                 {
                     "constant": false,
-                    "inputs": [
-                        {
+                    "inputs": [{
                             "name": "adr",
                             "type": "address"
                         },
@@ -386,8 +387,7 @@
                 },
                 {
                     "constant": false,
-                    "inputs": [
-                        {
+                    "inputs": [{
                             "name": "adr",
                             "type": "address"
                         },
@@ -410,12 +410,10 @@
                 },
                 {
                     "constant": false,
-                    "inputs": [
-                        {
-                            "name": "amount",
-                            "type": "uint256"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "amount",
+                        "type": "uint256"
+                    }],
                     "name": "Withdraw",
                     "outputs": [],
                     "payable": false,
@@ -426,151 +424,121 @@
                     "constant": true,
                     "inputs": [],
                     "name": "GetContractBalance",
-                    "outputs": [
-                        {
-                            "name": "",
-                            "type": "uint256"
-                        }
-                    ],
+                    "outputs": [{
+                        "name": "",
+                        "type": "uint256"
+                    }],
                     "payable": false,
                     "stateMutability": "view",
                     "type": "function"
                 },
                 {
                     "constant": true,
-                    "inputs": [
-                        {
-                            "name": "adr",
-                            "type": "address"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "adr",
+                        "type": "address"
+                    }],
                     "name": "GetDogtagContent",
-                    "outputs": [
-                        {
-                            "name": "",
-                            "type": "string"
-                        }
-                    ],
+                    "outputs": [{
+                        "name": "",
+                        "type": "string"
+                    }],
                     "payable": false,
                     "stateMutability": "view",
                     "type": "function"
                 },
                 {
                     "constant": true,
-                    "inputs": [
-                        {
-                            "name": "adr",
-                            "type": "address"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "adr",
+                        "type": "address"
+                    }],
                     "name": "GetDogtagName",
-                    "outputs": [
-                        {
-                            "name": "",
-                            "type": "string"
-                        }
-                    ],
+                    "outputs": [{
+                        "name": "",
+                        "type": "string"
+                    }],
                     "payable": false,
                     "stateMutability": "view",
                     "type": "function"
                 },
                 {
                     "constant": true,
-                    "inputs": [
-                        {
-                            "name": "adr",
-                            "type": "address"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "adr",
+                        "type": "address"
+                    }],
                     "name": "GetVerifier",
-                    "outputs": [
-                        {
-                            "name": "",
-                            "type": "address"
-                        }
-                    ],
+                    "outputs": [{
+                        "name": "",
+                        "type": "address"
+                    }],
                     "payable": false,
                     "stateMutability": "view",
                     "type": "function"
                 },
                 {
                     "constant": true,
-                    "inputs": [
-                        {
-                            "name": "adr",
-                            "type": "address"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "adr",
+                        "type": "address"
+                    }],
                     "name": "IsAdmin",
-                    "outputs": [
-                        {
-                            "name": "",
-                            "type": "bool"
-                        }
-                    ],
+                    "outputs": [{
+                        "name": "",
+                        "type": "bool"
+                    }],
                     "payable": false,
                     "stateMutability": "view",
                     "type": "function"
                 },
                 {
                     "constant": true,
-                    "inputs": [
-                        {
-                            "name": "adr",
-                            "type": "address"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "adr",
+                        "type": "address"
+                    }],
                     "name": "IsOwner",
-                    "outputs": [
-                        {
-                            "name": "",
-                            "type": "bool"
-                        }
-                    ],
+                    "outputs": [{
+                        "name": "",
+                        "type": "bool"
+                    }],
                     "payable": false,
                     "stateMutability": "view",
                     "type": "function"
                 },
                 {
                     "constant": true,
-                    "inputs": [
-                        {
-                            "name": "adr",
-                            "type": "address"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "adr",
+                        "type": "address"
+                    }],
                     "name": "IsVerified",
-                    "outputs": [
-                        {
-                            "name": "",
-                            "type": "bool"
-                        }
-                    ],
+                    "outputs": [{
+                        "name": "",
+                        "type": "bool"
+                    }],
                     "payable": false,
                     "stateMutability": "view",
                     "type": "function"
                 },
                 {
                     "constant": true,
-                    "inputs": [
-                        {
-                            "name": "adr",
-                            "type": "address"
-                        }
-                    ],
+                    "inputs": [{
+                        "name": "adr",
+                        "type": "address"
+                    }],
                     "name": "IsVerifier",
-                    "outputs": [
-                        {
-                            "name": "",
-                            "type": "bool"
-                        }
-                    ],
+                    "outputs": [{
+                        "name": "",
+                        "type": "bool"
+                    }],
                     "payable": false,
                     "stateMutability": "view",
                     "type": "function"
                 }
             ]
-            contract = eth.contract(tokenABI).at('0x5e609906562de69e5ab2ef681f71dfbba43ce7fd')//Old contract 0x0305c3463f4efd55466a4b09df63a3483da5fd00
+            contract = eth.contract(tokenABI).at('0x5e609906562de69e5ab2ef681f71dfbba43ce7fd') //Old contract 0x0305c3463f4efd55466a4b09df63a3483da5fd00
         }
 
         var vue = new Vue({
@@ -585,6 +553,14 @@
                 inspectDogtagDialog: false,
                 verificationDialog: false,
                 dogtagSearchAddress: null,
+                faqData: [{
+                    question: "Is this faq complete?",
+                    answer: "No, not at all."
+                },
+                {
+                    question: "What is an ethereum smart contract?",
+                    answer: "Code that runs in the ehereum network. It can store data or perform calculations."
+                }],
                 myDogtag: {
                     name: '',
                     bio: '',
@@ -610,27 +586,24 @@
                     step: 0,
                     result: false,
                     address: '',
-                    name:  '',
+                    name: '',
                     bio: ''
                 }
             },
             methods: {
-                openPreview () {
-                    window.open(this.getLinkToDogtag,'_blank');
+                openPreview() {
+                    window.open(this.getLinkToDogtag, '_blank');
                 },
-                openGit () {    
-                    window.open('https://github.com/jtomes123/ethtags','_blank');
+                openGit() {
+                    window.open('https://github.com/jtomes123/ethtags', '_blank');
                 },
-                openMetamask () {
-                    window.open('https://metamask.io','_blank');
+                openMetamask() {
+                    window.open('https://metamask.io', '_blank');
                 },
-                isAddress (val) {
-                    if(val && !Eth.isAddress(val))
-                    {
+                isAddress(val) {
+                    if (val && !Eth.isAddress(val)) {
                         return 'This is not a valid ethereum address.'
-                    }
-                    else
-                    {
+                    } else {
                         return true
                     }
                 },
@@ -643,7 +616,7 @@
                         const name = await this.ethtags.GetDogtagName(this.verification.address)
                         const bio = await this.ethtags.GetDogtagContent(this.verification.address)
                         const isVerified = await this.ethtags.IsVerified(this.verification.address)
-                        
+
                         this.verification.name = name[0]
                         this.verification.bio = bio[0]
                         this.verification.isVerified = isVerified[0]
@@ -658,7 +631,10 @@
                         if (Eth.isAddress(this.verification.address) && addresses[0]) {
                             this.verification.inProcess = true
 
-                            const result = await this.ethtags.SetVerificationStatus(this.verification.address, true, { from: addresses[0] });
+                            const result = await this.ethtags.SetVerificationStatus(this.verification.address,
+                                true, {
+                                    from: addresses[0]
+                                });
 
                             this.verification.inProcess = false
                             this.verification.step = 3
@@ -670,23 +646,23 @@
                         this.verification.step = 3
                         this.verification.result = false
                     }
-                    
+
                 },
                 verificationClose() {
                     this.verification = {
-                            active: false,
-                            inProcess: false,
-                            step: 0,
-                            result: false,
-                            address: '',
-                            name:  '',
-                            bio: ''
-                        }
+                        active: false,
+                        inProcess: false,
+                        step: 0,
+                        result: false,
+                        address: '',
+                        name: '',
+                        bio: ''
+                    }
                 },
                 async updateMyDogtag() {
                     const addresses = await this.ethereum.accounts()
                     console.log(addresses)
-                    if(addresses[0]) {
+                    if (addresses[0]) {
                         const name = await this.ethtags.GetDogtagName(addresses[0])
                         const bio = await this.ethtags.GetDogtagContent(addresses[0])
                         const isVerified = await this.ethtags.IsVerified(addresses[0])
@@ -701,7 +677,7 @@
                 async sendDogtagToBlockchain() {
                     const addresses = await this.ethereum.accounts()
 
-                    if(addresses[0]) {
+                    if (addresses[0]) {
                         try {
                             this.myDogtag.isBeingUpdated = true
 
@@ -733,8 +709,8 @@
                             this.myDogtag.donateAmount = 0
                             this.myDogtag.hadError = true
                         }
-                        
-                    }                   
+
+                    }
                 },
                 async searchForAddress() {
                     this.dogtagPreview.name = ''
@@ -745,17 +721,27 @@
                         const name = await this.ethtags.GetDogtagName(this.dogtagSearchAddress)
                         const bio = await this.ethtags.GetDogtagContent(this.dogtagSearchAddress)
                         const isVerified = await this.ethtags.IsVerified(this.dogtagSearchAddress)
-                        
+
                         this.dogtagPreview.name = name[0]
                         this.dogtagPreview.bio = bio[0]
                         this.dogtagPreview.isVerified = isVerified[0]
 
                         this.dogtagPreview.active = true
                     }
+                },
+                async isUserVerifier() {
+                    const addresses = await this.ethereum.accounts()
+
+                    if (addresses[0] && this.ethtags) {
+                        const result = await this.ethtags.IsVerifier(addresses[0])
+                        return result[0]
+                    } else {
+                        return false
+                    }
                 }
             },
             computed: {
-                getIframe () {
+                getIframe() {
                     return '<iframe href="' + this.getLinkToDogtag + '">'
                 },
                 getLinkToDogtag() {
@@ -774,43 +760,57 @@
         })
     </script>
     <style>
-        .flex-centered, .flex-centered-80 {
+        .flex-centered,
+        .flex-centered-80 {
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
             padding: 1rem;
         }
+
         .flex-centered-80 {
             max-width: 80%;
             width: 80%;
         }
+
         .flex-inline-50 {
             width: 50%;
         }
-        .flex-inline, .flex-inline-50 {
+
+        .flex-inline,
+        .flex-inline-50 {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-direction: row;
             padding: 1rem;
         }
+
         .swatch-checkbox {
             -webkit-appearance: none;
             background-color: #fafafa;
             border: 1px solid #cacece;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
             padding: 9px;
             border-radius: 3px;
             display: inline-block;
             position: relative;
         }
+
         .swatch-checkbox:checked {
             background-color: aquamarine;
         }
-        .swatch-checkbox:active, .swatch-checkbox:checked:active {
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
+
+        .swatch-checkbox:active,
+        .swatch-checkbox:checked:active {
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .margin-1rem {
+            margin: 1rem;
         }
     </style>
 </body>
+
 </html>
