@@ -164,7 +164,7 @@ contract Dogtags {
             }
         }
     }
-    function Donate() payable {
+    function Donate() public payable {
 
     }
 }
