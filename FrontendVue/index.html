@@ -13,7 +13,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/vue-swatches/dist/vue-swatches.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <title>Ethtags</title>
 </head>
@@ -44,7 +43,7 @@
             <v-footer app>
                 <v-btn outline small @click="openGit">GitHub</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn :v-if="ethtags !== null" outline small @click="verification.active = true">Verification</v-btn>
+                <v-btn v-if="ethtags !== null && properties.isVerifier === true" outline small @click="verification.active = true">Verification</v-btn>
             </v-footer>
 
             <v-dialog v-model="aboutDialog" scrollable fullscreen hide-overlay transition="dialog-bottom-transition">
@@ -130,11 +129,11 @@
                                 <h2>Dogtag Style</h2>
                                 <div class="flex-inline-50">
                                     <h3>Background Color</h3>
-                                    <swatches v-model="myDogtag.bgColor" />
+                                    <div :style="{ backgroundColor: myDogtag.bgColor }" class="colorswatch"><input type="color" v-model="myDogtag.bgColor"></div>
                                 </div>
                                 <div class="flex-inline-50">
                                     <h3>Text Color</h3>
-                                    <swatches v-model="myDogtag.textColor" />
+                                    <div :style="{ backgroundColor: myDogtag.textColor }" class="colorswatch"><input type="color" v-model="myDogtag.textColor"></div>
                                 </div>
                                 <div class="flex-inline-50">
                                     <h3>Display QRCode</h3>
@@ -263,7 +262,6 @@
     </div>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ethjs@0.3.4/dist/ethjs.min.js"></script>
-    <script src="https://unpkg.com/vue-swatches"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
     <script src="https://cdn.rawgit.com/Inndy/vue-clipboard2/master/dist/vue-clipboard.js"></script>
@@ -543,6 +541,9 @@
 
         var vue = new Vue({
             el: '#app',
+            created() {
+                this.isUserVerifier().then(val => this.properties.isVerifier = val)
+            },
             data: {
                 Eth: Eth,
                 ethereum: eth,
@@ -588,6 +589,9 @@
                     address: '',
                     name: '',
                     bio: ''
+                },
+                properties: {
+                    isVerifier: false
                 }
             },
             methods: {
@@ -755,7 +759,7 @@
                 }
             },
             components: {
-                Swatches: window.VueSwatches.default
+
             },
         })
     </script>
@@ -768,15 +772,24 @@
             flex-direction: column;
             padding: 1rem;
         }
-
-        .flex-centered-80 {
-            max-width: 80%;
-            width: 80%;
-        }
-
         .flex-inline-50 {
-            width: 50%;
+            width: 95%;
         }
+        .flex-centered-80 {
+            max-width: 95%;
+            width: 95%;
+        }
+        @media only screen and (min-width: 600px) {
+            .flex-inline-50 {
+                width: 50%;
+            }
+            .flex-centered-80 {
+                max-width: 95%;
+                width: 95%;
+            }
+        }
+
+
 
         .flex-inline,
         .flex-inline-50 {
@@ -786,7 +799,18 @@
             flex-direction: row;
             padding: 1rem;
         }
-
+        input[type="color"] {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .colorswatch {
+            border-radius: 10pt;
+            border-color: black;
+            border-width: 0.1rem;
+            width: 2rem;
+            height: 2rem;
+        }
         .swatch-checkbox {
             -webkit-appearance: none;
             background-color: #fafafa;
@@ -796,6 +820,8 @@
             border-radius: 3px;
             display: inline-block;
             position: relative;
+            width: 2rem;
+            height: 2rem;
         }
 
         .swatch-checkbox:checked {
@@ -809,6 +835,13 @@
 
         .margin-1rem {
             margin: 1rem;
+        }
+        code,
+        pre,
+        samp {
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            max-width: 95%;
         }
     </style>
 </body>
