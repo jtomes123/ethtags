@@ -82,32 +82,34 @@
                         </v-btn>
                         <v-toolbar-title>About</v-toolbar-title>
                     </v-toolbar>
-                    <v-layout align-start justify-center direction="column">
-                        <div class="flex-centered-80">
-                            <p>
-                                Ethtags is a project which lets you create your own
-                                <b>dogtag</b> which is attached to your address. The dogtag is always attached to the address
-                                that invoked the contract, in other words your friends can not change your dogtag, if they
-                                do not have full access to your wallet.
-                            </p>
-                            <p>
-                                The dogtag itself is stored in the ethereum blockchain and the data can be accessed at any time as long as you have access
-                                to the ethereum blockchain. The ethtags frontend provides a simple way to access your dogtag.
-                                You can get a link to it which you can then send to anyone to check out your dogtag or you
-                                can embed it as an signature anywhere where they support iframe html tag.
-                            </p>
-                            <p>
-                                There are future plans to allow you, to get the information, specifically the name, in your dogtag verified by a trusted
-                                third party, like the post office or some other third party which would be present almost
-                                anywhere. These verified dogtags would be very handy when you need to send a larger amount
-                                of currency to a someone else and you want to be sure that it is them.
-                            </p>
-                            <p>
-                                Ethtags is currently maintained and developed by Jakub Tomeš a casual programmer and game developer that wanted to start
-                                developing smart contracts.
-                            </p>
-                        </div>
-                    </v-layout>
+                    <v-card-text>
+                        <v-layout align-start justify-center direction="column">
+                            <div class="flex-centered-80">
+                                <p>
+                                    Ethtags is a project which lets you create your own
+                                    <b>dogtag</b> which is attached to your address. The dogtag is always attached to the address
+                                    that invoked the contract, in other words your friends can not change your dogtag, if they
+                                    do not have full access to your wallet.
+                                </p>
+                                <p>
+                                    The dogtag itself is stored in the ethereum blockchain and the data can be accessed at any time as long as you have access
+                                    to the ethereum blockchain. The ethtags frontend provides a simple way to access your dogtag.
+                                    You can get a link to it which you can then send to anyone to check out your dogtag or you
+                                    can embed it as an signature anywhere where they support iframe html tag.
+                                </p>
+                                <p>
+                                    There are future plans to allow you, to get the information, specifically the name, in your dogtag verified by a trusted
+                                    third party, like the post office or some other third party which would be present almost
+                                    anywhere. These verified dogtags would be very handy when you need to send a larger amount
+                                    of currency to a someone else and you want to be sure that it is them.
+                                </p>
+                                <p>
+                                    Ethtags is currently maintained and developed by Jakub Tomeš a casual programmer and game developer that wanted to start
+                                    developing smart contracts.
+                                </p>
+                            </div>
+                        </v-layout>
+                    </v-card-text>
                 </v-card>
             </v-dialog>
             <!--
@@ -121,23 +123,25 @@
                         </v-btn>
                         <v-toolbar-title>FAQ</v-toolbar-title>
                     </v-toolbar>
-                    <v-layout align-start justify-center direction="column">
-                        <div class="flex-centered-80">
-                            <!--
-                                Iterates over every item in faqData and renders it
-                            -->
-                            <template v-for="(item, index) in faqData">
-                                <v-card v-bind:key="index" width="100%" class="margin-1rem">
-                                    <v-card-title class="accent white--text">
-                                        {{ item.question }}
-                                    </v-card-title>
-                                    <v-card-text>
-                                        {{ item.answer }}
-                                    </v-card-text>
-                                </v-card>
-                            </template>
-                        </div>
-                    </v-layout>
+                    <v-card-text>
+                        <v-layout align-start justify-center direction="column">
+                            <div class="flex-centered-80">
+                                <!--
+                                    Iterates over every item in faqData and renders it
+                                -->
+                                <template v-for="(item, index) in faqData">
+                                    <v-card v-bind:key="index" width="100%" class="margin-1rem">
+                                        <v-card-title class="accent white--text">
+                                            {{ item.question }}
+                                        </v-card-title>
+                                        <v-card-text>
+                                            {{ item.answer }}
+                                        </v-card-text>
+                                    </v-card>
+                                </template>
+                            </div>
+                        </v-layout>
+                    </v-card-text>
                 </v-card>
             </v-dialog>
             <!--
