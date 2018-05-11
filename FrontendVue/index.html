@@ -14,6 +14,15 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
     <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <!--
+        We want to load the dependencies first in order to let vue render the web page
+    -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ethjs@0.3.4/dist/ethjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
+    <script src="https://cdn.rawgit.com/Inndy/vue-clipboard2/master/dist/vue-clipboard.js"></script>
+
     <title>Ethtags</title>
 </head>
 
@@ -21,6 +30,9 @@
     <div id="app">
         <v-app>
             <v-toolbar app>
+                <!--
+                    Menu of the app
+                -->
                 <v-btn outline @click="faqDialog = true">FAQ</v-btn>
                 <v-btn outline @click="aboutDialog = true">About</v-btn>
                 <v-spacer></v-spacer>
@@ -29,6 +41,10 @@
             <v-content>
                 <v-container fluid fill-height>
                     <v-layout align-center justify-center>
+                        <!--
+                            If metamask is detected and contact with the contract is established,
+                            then the searchbar is shown, otherwise display message about metamask
+                        -->
                         <div class="flex-centered-80" v-if="ethtags !== null">
                             <v-text-field name="address-search" label="Ethereum Address" id="testing" :rules="[isAddress]" v-model="dogtagSearchAddress"></v-text-field>
                             <v-btn @click="searchForAddress" :disabled="!Eth.isAddress(dogtagSearchAddress)" outline>Reveal dogtag</v-btn>
@@ -41,11 +57,23 @@
                 </v-container>
             </v-content>
             <v-footer app>
+                <!--
+                    Button to open github page of ethtags
+                -->
                 <v-btn outline small @click="openGit">GitHub</v-btn>
                 <v-spacer></v-spacer>
+                <!--
+                    Buttons that open verification, admin management and withdraws,
+                    these are only shown to addresses that have such a level of access
+                -->
                 <v-btn v-if="ethtags !== null && properties.isVerifier === true" outline small @click="verification.active = true">Verification</v-btn>
+                <v-btn v-if="ethtags !== null && properties.isOwner === true" outline small @click="withdraw.active = true">Withdraw</v-btn>
+                <v-btn v-if="ethtags !== null && properties.isOwner === true" outline small @click="administrators.active = true">Administrators</v-btn>
             </v-footer>
-
+            <!--
+                Dialog containing about section
+                Nothing special here, this is mostly static html
+            -->
             <v-dialog v-model="aboutDialog" scrollable fullscreen hide-overlay transition="dialog-bottom-transition">
                 <v-card tile>
                     <v-toolbar dense>
@@ -82,7 +110,9 @@
                     </v-layout>
                 </v-card>
             </v-dialog>
-
+            <!--
+                Dialog containing a faq, you can set the contents of the faq in data of the vue app
+            -->
             <v-dialog v-model="faqDialog" scrollable fullscreen hide-overlay transition="dialog-bottom-transition">
                 <v-card tile>
                     <v-toolbar dense>
@@ -93,6 +123,9 @@
                     </v-toolbar>
                     <v-layout align-start justify-center direction="column">
                         <div class="flex-centered-80">
+                            <!--
+                                Iterates over every item in faqData and renders it
+                            -->
                             <template v-for="(item, index) in faqData">
                                 <v-card v-bind:key="index" width="100%" class="margin-1rem">
                                     <v-card-title class="accent white--text">
@@ -107,7 +140,9 @@
                     </v-layout>
                 </v-card>
             </v-dialog>
-
+            <!--
+                Dialog which handles users dogtags
+            -->
             <v-dialog v-model="myDogtagDialog" scrollable fullscreen hide-overlay transition="dialog-bottom-transition">
                 <v-card tile>
                     <v-toolbar dense>
@@ -177,7 +212,9 @@
                     </v-dialog>
                 </v-card>
             </v-dialog>
-
+            <!--
+                Shows a dogtag that belongs to a specified user
+            -->
             <v-dialog max-width="75%" v-model="dogtagPreview.active">
                 <v-card>
                     <v-card-title class="accent white--text">
@@ -195,6 +232,67 @@
                             <v-btn @click="dogtagPreview.active = false">Close</v-btn>
                         </div>
                     </v-card-actions>
+                </v-card>
+            </v-dialog>
+
+            <v-dialog max-width="75%" v-model="administrators.active">
+                <v-card>
+                    <v-card-title class="accent white--text">
+                        Administrators
+                    </v-card-title>
+                    <v-card-text>
+                        <v-stepper v-model="administrators.step">
+                            <v-stepper-header>
+                                <v-stepper-step step="1" :complete="administrators.step > 1">Enter the address</v-stepper-step>
+                                <v-divider></v-divider>
+                                <v-stepper-step step="2" :complete="administrators.step > 2">Administrator form</v-stepper-step>
+                                <v-divider></v-divider>
+                                <v-stepper-step step="3" :complete="administrators.step > 3">Done</v-stepper-step>
+                            </v-stepper-header>
+                            <v-stepper-items>
+                                <v-stepper-content step="1">
+                                    <v-container fluid fill-height>
+                                        <v-layout align-center justify-center>
+                                            <div class="flex-centered-80">
+                                                <v-text-field name="address-search-verification" label="Ethereum Address" id="testing" :rules="[isAddress]" v-model="administrators.address"></v-text-field>
+                                            </div>
+                                        </v-layout>
+                                    </v-container>
+                                    <v-btn color="primary" @click.native="administratorsFetchData" :disabled="!Eth.isAddress(administrators.address)">Continue</v-btn>
+                                    <v-btn flat @click="administratorsClose">Cancel</v-btn>
+                                </v-stepper-content>
+                                <v-stepper-content step="2">
+                                    <v-card class="mb-5" height="200px">
+                                        <h3>Address</h3>
+                                        <p>{{administrators.address}}</p>
+                                        <h3>Name</h3>
+                                        <p>{{administrators.name}}</p>
+                                        <p v-if="administrators.isAdmin">Administrator</p>
+                                    </v-card>
+                                    <v-btn v-if="!administrators.isAdmin" color="success" @click="setAdministratorStatus(true)" :loading="administrators.inProcess" :disabled="administrators.inProcess">Give Admin Rights</v-btn>
+                                    <v-btn v-else color="error" @click="setAdministratorStatus(false)" :loading="administrators.inProcess" :disabled="administrators.inProcess">Take Admin Rights</v-btn>
+                                    <v-btn flat @click="administratorsClose">Cancel</v-btn>
+                                </v-stepper-content>
+                                <v-stepper-content step="3">
+                                    <v-card class="mb-5" height="200px">
+                                        <v-container fluid fill-height>
+                                            <v-layout align-center justify-center>
+                                                <div class="flex-centered-80">
+                                                    <v-alert v-if="administrators.result" type="success" :value="true">
+                                                        Administrator status changed.
+                                                    </v-alert>
+                                                    <v-alert v-else type="error" :value="true">
+                                                        There was an error. Please try again later.
+                                                    </v-alert>
+                                                </div>
+                                            </v-layout>
+                                        </v-container>
+                                    </v-card>
+                                    <v-btn color="primary" @click="administratorsClose">Close</v-btn>
+                                </v-stepper-content>
+                            </v-stepper-items>
+                        </v-stepper>
+                    </v-card-text>
                 </v-card>
             </v-dialog>
 
@@ -258,13 +356,29 @@
                     </v-card-text>
                 </v-card>
             </v-dialog>
+
+            <v-dialog max-width="50%" v-model="withdraw.active">
+                    <v-card>
+                        <v-card-title class="accent white--text">
+                            Withdraw
+                        </v-card-title>
+                        <v-card-text>
+                            <p>You can withdraw up to 90% of ethereum belonging to the contract</p>
+                            <div class="flex-inline">
+                                <v-text-field type="number" label="How much do you wish to withdraw?" step="0.001" v-model="withdraw.amount"></v-text-field>
+                            </div>
+                        </v-card-text>
+                        <v-card-actions>
+                            <div class="flex-inline">
+                                <v-btn color="primary" :loading="withdraw.isBeingUpdated" :disabled="withdraw.isBeingUpdated" @click="withdrawFromContract">Confirm</v-btn>
+                                <v-btn @click="withdraw.active = false">Cancel</v-btn>
+                            </div>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
         </v-app>
     </div>
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/ethjs@0.3.4/dist/ethjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://unpkg.com/vuetify/dist/vuetify.js"></script>
-    <script src="https://cdn.rawgit.com/Inndy/vue-clipboard2/master/dist/vue-clipboard.js"></script>
     <script>
         var eth = null;
         var contract = null;
@@ -543,6 +657,8 @@
             el: '#app',
             created() {
                 this.isUserVerifier().then(val => this.properties.isVerifier = val)
+                this.isUserAdmin().then(val => this.properties.isAdmin = val)
+                this.isUserOwner().then(val => this.properties.isOwner = val)
             },
             data: {
                 Eth: Eth,
@@ -554,6 +670,9 @@
                 inspectDogtagDialog: false,
                 verificationDialog: false,
                 dogtagSearchAddress: null,
+                /**
+                 * Stores faq
+                 */
                 faqData: [{
                     question: "Is this faq complete?",
                     answer: "No, not at all."
@@ -562,6 +681,9 @@
                     question: "What is an ethereum smart contract?",
                     answer: "Code that runs in the ehereum network. It can store data or perform calculations."
                 }],
+                /**
+                 * Datastorage for myDogtag dialog
+                 */
                 myDogtag: {
                     name: '',
                     bio: '',
@@ -575,12 +697,18 @@
                     textColor: '#000000',
                     displayQR: true
                 },
+                /**
+                 * Datastorage for dogtagPreview dialog
+                 */
                 dogtagPreview: {
                     name: '',
                     bio: '',
                     isVerified: '',
                     active: false
                 },
+                /**
+                 * Datastorage for verification dialog
+                 */
                 verification: {
                     active: false,
                     inProcess: false,
@@ -590,20 +718,59 @@
                     name: '',
                     bio: ''
                 },
+                /**
+                 * Datastorage for administrators dialog
+                 */
+                administrators: {
+                    active: false,
+                    inProcess: false,
+                    step: 0,
+                    result: false,
+                    address: '',
+                    name: '',
+                    isAdmin: false
+                },
+                /**
+                 * Datastorage for withdraw dialog
+                 */
+                withdraw: {
+                    active: false,
+                    amount: 0,
+                    isBeingUpdated: false
+                },
+                /**
+                 * Stores various properties
+                 */
                 properties: {
-                    isVerifier: false
+                    isVerifier: false,
+                    isOwner: false,
+                    isAdmin: false
                 }
             },
             methods: {
+                /**
+                 * Opens preview of users dogtag in a new window
+                */
                 openPreview() {
                     window.open(this.getLinkToDogtag, '_blank');
                 },
+                /**
+                    * Opens ethtags github repository in a new window
+                */
                 openGit() {
                     window.open('https://github.com/jtomes123/ethtags', '_blank');
                 },
+                /**
+                    * Opens metamasks homepage in a new window
+                */
                 openMetamask() {
                     window.open('https://metamask.io', '_blank');
                 },
+                /**
+                    * Checks if val is ethereum address
+                    * @param {string} val - potential address
+                    * @returns {bool}
+                */
                 isAddress(val) {
                     if (val && !Eth.isAddress(val)) {
                         return 'This is not a valid ethereum address.'
@@ -611,6 +778,67 @@
                         return true
                     }
                 },
+                /**
+                 * Fetches data from the contract and feeds it into the administrators dialog
+                 */
+                async administratorsFetchData() {
+                    this.administrators.name = ''
+                    this.administrators.isAdmin = false
+                    if (Eth.isAddress(this.administrators.address)) {
+                        console.log('requesting...')
+                        const name = await this.ethtags.GetDogtagName(this.administrators.address)
+                        const isAdmin = await this.ethtags.IsAdmin(this.administrators.address)
+
+                        this.administrators.name = name[0]
+                        this.administrators.isAdmin = isAdmin[0]
+
+                        this.administrators.step = 2
+                    }
+                },
+                /**
+                 * Sets the status of administrator and moves to next step in stepper
+                 * @param {bool} value - Status for the admin
+                 */
+                async setAdministratorStatus(value) {
+                    try {
+                        const addresses = await this.ethereum.accounts()
+
+                        if (Eth.isAddress(this.administrators.address) && addresses[0]) {
+                            this.administrators.inProcess = true
+
+                            const result = await this.ethtags.SetAdminStatus(this.administrators.address,
+                                value, {
+                                    from: addresses[0]
+                                });
+
+                            this.administrators.inProcess = false
+                            this.administrators.step = 3
+                            this.administrators.result = true
+                        }
+                    } catch (e) {
+                        console.log(e)
+                        this.administrators.inProcess = false
+                        this.administrators.step = 3
+                        this.administrators.result = false
+                    }
+                },
+                /**
+                 * Closes administrators dialog and resets it
+                 */
+                administratorsClose() {
+                    this.administrators = {
+                        active: false,
+                        inProcess: false,
+                        step: 0,
+                        result: false,
+                        address: '',
+                        name: '',
+                        isAdmin: false
+                    }
+                },
+                /**
+                 * Fetches data from the contract and feeds it into the verification dialog
+                 */
                 async verificationFetchData() {
                     this.verification.name = ''
                     this.verification.bio = ''
@@ -628,6 +856,9 @@
                         this.verification.step = 2
                     }
                 },
+                /**
+                 * Verifies the user and increments the stepper
+                 */
                 async verificationVerify() {
                     try {
                         const addresses = await this.ethereum.accounts()
@@ -652,6 +883,9 @@
                     }
 
                 },
+                /**
+                 * Closes verification dialog and resets it
+                 */
                 verificationClose() {
                     this.verification = {
                         active: false,
@@ -663,6 +897,9 @@
                         bio: ''
                     }
                 },
+                /**
+                 * Updates data in myDogtag dialog
+                 */
                 async updateMyDogtag() {
                     const addresses = await this.ethereum.accounts()
                     console.log(addresses)
@@ -678,6 +915,9 @@
                         this.myDogtag.address = addresses[0]
                     }
                 },
+                /**
+                 * Sends updated dogtag data to the blockchain
+                 */
                 async sendDogtagToBlockchain() {
                     const addresses = await this.ethereum.accounts()
 
@@ -716,6 +956,9 @@
 
                     }
                 },
+                /**
+                 * Fetches dogtag for specified address from blockchain and opens dogtagPreview dialog
+                 */
                 async searchForAddress() {
                     this.dogtagPreview.name = ''
                     this.dogtagPreview.bio = ''
@@ -733,6 +976,36 @@
                         this.dogtagPreview.active = true
                     }
                 },
+                /**
+                 * Withdraws specified amount from the contract
+                 * it is sent to the owners address (always)
+                 */
+                async withdrawFromContract() {
+                    const addresses = await this.ethereum.accounts()
+
+                    if (addresses[0]) {
+                        try {
+                            this.withdraw.isBeingUpdated = true
+
+                            var data = {
+                                from: addresses[0],
+                            }
+                            await this.ethtags.Withdraw(Eth.toWei(this.withdraw.amount, 'ether'), data)
+
+                            this.withdraw.isBeingUpdated = false
+                        } catch(error) {
+                            console.log(error)
+                            this.withdraw.isBeingUpdated = false
+                        }
+                    }
+
+                    this.withdraw.amount = 0
+                    this.withdraw.active = false
+                },
+                /**
+                 * Checks if user is verified
+                 * @returns {bool}
+                 */
                 async isUserVerifier() {
                     const addresses = await this.ethereum.accounts()
 
@@ -742,12 +1015,48 @@
                     } else {
                         return false
                     }
+                },
+                /**
+                 * Checks if user is administrator
+                 * @returns {bool}
+                 */
+                async isUserAdmin() {
+                    const addresses = await this.ethereum.accounts()
+
+                    if (addresses[0] && this.ethtags) {
+                        const result = await this.ethtags.IsAdmin(addresses[0])
+                        return result[0]
+                    } else {
+                        return false
+                    }
+                },
+                /**
+                 * Checks if user is owner
+                 * @returns {bool}
+                 */
+                async isUserOwner() {
+                    const addresses = await this.ethereum.accounts()
+
+                    if (addresses[0] && this.ethtags) {
+                        const result = await this.ethtags.IsOwner(addresses[0])
+                        return result[0]
+                    } else {
+                        return false
+                    }
                 }
             },
             computed: {
+                /**
+                 * Returns iframe html for the dogtag
+                 * @returns {string}
+                 */
                 getIframe() {
                     return '<iframe href="' + this.getLinkToDogtag + '">'
                 },
+                /**
+                 * Returns link to the dogtag
+                 * @returns {string}
+                 */
                 getLinkToDogtag() {
                     const url = new URL('http://ethtags-vue.herokuapp.com/iframe.html')
                     url.searchParams.append('adr', this.myDogtag.address)
