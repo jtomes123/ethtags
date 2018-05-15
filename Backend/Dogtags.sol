@@ -39,6 +39,22 @@ contract DogtagsDataStorage {
         currentContract = newContract;
     }
 
+    //Storage for administrators, verifiers and verification status
+    mapping (address => bool) administrators;
+    mapping (address => bool) verifiers;
+    function getAdminStatus(address user) view public returns(bool) {
+        return administrators[user];
+    }
+    function setAdminStatus(address user, bool status) public onlyAuthorized {
+        administrators[user] = status;
+    }
+    function getVerifierStatus(address user) view public returns(bool) {
+        return verifiers[user];
+    }
+    function setVerifierStatus(address user, bool status) public onlyAuthorized {
+        verifiers[user] = status;
+    }
+
     //Storage for strings
     mapping (address => mapping(string => string)) strings;
     function getString(address user, string key) view public returns(string) {
@@ -106,28 +122,28 @@ contract Dogtags {
     }
 
     //Getters
-    function GetDogtagContent(address adr) public constant returns(string) {
+    function GetDogtagContent(address adr) public view returns(string) {
         return data.getString(adr, "content");
     }
-    function GetDogtagName(address adr) public constant returns(string) {
+    function GetDogtagName(address adr) public view returns(string) {
         return data.getString(adr, "name");
     }
-    function GetVerifier(address adr) public constant returns(address) {
+    function GetVerifier(address adr) public view returns(address) {
         return data.getAddress(adr, "verifier");
     }
-    function IsVerifier(address adr) public constant returns(bool) {
-        return data.getBool(adr, "isVerifier") || data.getBool(adr, "isAdmin") || (adr == owner);
+    function IsVerifier(address adr) public view returns(bool) {
+        return data.getVerifierStatus(adr) || data.getAdminStatus(adr) || (adr == owner);
     }
-    function IsVerified(address adr) public constant returns(bool) {
+    function IsVerified(address adr) public view returns(bool) {
         return data.getBool(adr, "isVerified");
     }
-    function IsAdmin(address adr) public constant returns(bool) {
-        return data.getBool(adr, "isAdmin") || (adr == owner);
+    function IsAdmin(address adr) public view returns(bool) {
+        return data.getAdminStatus(adr) || (adr == owner);
     }
-    function IsOwner(address adr) public constant returns(bool) {
+    function IsOwner(address adr) public view returns(bool) {
         return (adr == owner);
     }
-    function GetContractBalance() public constant returns(uint) {
+    function GetContractBalance() public view returns(uint) {
         return address(this).balance;
     }
     
@@ -156,7 +172,7 @@ contract Dogtags {
 
     //Set if the address is admin
     function SetAdminStatus(address adr, bool status) public onlyOwner {
-        data.setBool(adr, "isAdmin", status);
+        data.setAdminStatus(adr, status);
     }
 
     //Set if dogtag is verified or not
@@ -167,11 +183,8 @@ contract Dogtags {
 
     //Gives address the ability to verify users
     function SetVerifierStatus(address adr, bool status) public onlyAdmin {
-        if (data.getBool(msg.sender, "isVerifier") != status) {
-            data.setBool(adr, "isVerifier", status);
-        } else {
-            revert();
-        }
+        require(data.getVerifierStatus(adr) != status);
+        data.setVerifierStatus(adr, status);
     }
     function Withdraw(uint amount) public onlyOwner {
         if (address(this).balance - amount > address(this).balance / 10) {
