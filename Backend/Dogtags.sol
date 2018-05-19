@@ -15,7 +15,7 @@ contract DogtagsDataStorage {
     address currentContract;
 
     //The constructor
-    function DogtagsDataStorage(address newContract) public {
+    constructor(address newContract) public {
         owner = msg.sender;
         currentContract = newContract;
     }
@@ -39,9 +39,10 @@ contract DogtagsDataStorage {
         currentContract = newContract;
     }
 
-    //Storage for administrators, verifiers and verification status
+    //Storage for administrators, verifiers and donated amount
     mapping (address => bool) administrators;
     mapping (address => bool) verifiers;
+    mapping (address => uint) donations;
     function getAdminStatus(address user) view public returns(bool) {
         return administrators[user];
     }
@@ -53,6 +54,12 @@ contract DogtagsDataStorage {
     }
     function setVerifierStatus(address user, bool status) public onlyAuthorized {
         verifiers[user] = status;
+    }
+    function donated(address user, uint amount) public onlyAuthorized {
+        donations[user] = donations[user] + amount;
+    }
+    function getDonatedAmount(address user) view public returns(uint) {
+        return donations[user];
     }
 
     //Storage for strings
@@ -96,7 +103,7 @@ contract Dogtags {
     DogtagsDataStorage data;
     address owner;
     
-    function Dogtags() public {
+    constructor() public {
         owner = msg.sender;
     }
 
@@ -146,6 +153,9 @@ contract Dogtags {
     function GetContractBalance() public view returns(uint) {
         return address(this).balance;
     }
+    function GetDonatedAmount(address adr) public view returns(uint) {
+        return data.getDonatedAmount(adr);
+    }
     
     //Setters
 
@@ -156,13 +166,22 @@ contract Dogtags {
         data.setString(msg.sender, "name", name);
         data.setString(msg.sender, "content", content);
         data.setBool(msg.sender, "isVerified", false);
+        if (msg.value > 0) {
+            data.donated(msg.sender, msg.value);
+        }
     }
     function SetDogtagContent(string content) public payable {
         data.setString(msg.sender, "content", content);
+        if (msg.value > 0) {
+            data.donated(msg.sender, msg.value);
+        }
     }
     function SetDogtagName(string name) public payable {
         data.setString(msg.sender, "name", name);
         data.setBool(msg.sender, "isVerified", false);
+        if (msg.value > 0) {
+            data.donated(msg.sender, msg.value);
+        }
     }
 
     //Set new owner of the contract
@@ -192,6 +211,11 @@ contract Dogtags {
         }
     }
     function Donate() public payable {
-
+        if (msg.value > 0) {
+            data.donated(msg.sender, msg.value);
+        }
+    }
+    function Terminate() public onlyOwner {
+        selfdestruct(owner);
     }
 }
